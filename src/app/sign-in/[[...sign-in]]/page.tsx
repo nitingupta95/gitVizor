@@ -17,6 +17,7 @@ export default function Page() {
           <SignIn
             appearance={{
               elements: {
+                footer: "hidden",
                 card: "shadow-none border-none bg-transparent",
                 headerTitle: "hidden",
                 headerSubtitle: "hidden",

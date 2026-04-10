@@ -3,12 +3,23 @@ import useProject from '@/hooks/use-project'
 import { api } from '@/trpc/react'
 import { ExternalLink } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import { toast } from 'sonner'
+import React, { useEffect } from 'react'
 import { cn } from '@/lib/utils' // make sure this exists
 
 const CommitLog = () => {
   const { projectId, project } = useProject()
-  const { data: commits = [] } = api.project.getCommits.useQuery({ projectId })
+  const { data: commits = [], error } = api.project.getCommits.useQuery({ projectId: projectId as string })
+
+  useEffect(() => {
+    if (error) {
+      toast.error('Failed to load commits', {
+        description: error.data?.code === 'TOO_MANY_REQUESTS' || error.message.includes('quota') 
+          ? 'GitHub API rate limit exhausted. Please check your GitHub token.'
+          : error.message
+      })
+    }
+  }, [error])
 
   return (
     <div>

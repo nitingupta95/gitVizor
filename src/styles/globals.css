@@ -81,12 +81,13 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
- 
+
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -158,15 +159,15 @@
   --sidebar-accent: oklch(0.274 0.006 286.033);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376); 
---sidebar-background: 0 0% 98%;
---sidebar-foreground: 240 5.3% 26.1%;
---sidebar-primary: 240 5.9% 10%;
---sidebar-primary-foreground: 0 0% 98%;
---sidebar-accent: 240 4.8% 95.9%;
---sidebar-accent-foreground: 240 5.9% 10%;
---sidebar-border: 220 13% 91%;
---sidebar-ring: 217.2 91.2% 50.8%;
+  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 50.8%;
 
 }
 
@@ -213,4 +214,16 @@
   --sidebar-accent-foreground: 240 4.8% 95.9%;
   --sidebar-border: 240 3.7% 15.9%;
   --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+/* Hide Clerk Watermark */
+.cl-internal-b3fm6y {
+  display: none !important;
+}
+
+
+/* Hide Clerk Watermark */
+div:has(> a[href*="clerk.com"]),
+.cl-internal-1scxde7 {
+  display: none !important;
 }

@@ -55,7 +55,7 @@ const MeetingsPage = () => {
 
                 <div className="flex items-center text-xs text-gray-500 gap-x-2">
                   <p className="whitespace-nowrap">
-                    {meeting.createdAt.toLocaleDateString()}
+                    {new Date(meeting.createdAt).toLocaleDateString()}
                   </p>
                   <p className="truncate">{meeting.issues.length} issues</p>
                 </div>

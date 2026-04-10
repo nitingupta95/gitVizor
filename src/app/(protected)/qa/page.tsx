@@ -38,7 +38,7 @@ const QApage = () => {
                       {question.question}
                     </p>
                     <span className='text-xs text-gray-400 whitespace-nowrap'>
-                      {question.createdAt.toLocaleDateString()}
+                      {new Date(question.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                   <p className='text-gray-500 line-clamp-1 text-sm'>
@@ -65,9 +65,9 @@ const QApage = () => {
               />
 
               {/* Display code references if any */}
-              {question.fileReferences && question.fileReferences.length > 0 && (
+              {question.fileReferences && (question.fileReferences as any[]).length > 0 && (
                 <div className="mt-4">
-                  <CodeReferences filesReferences={question.fileReferences} />
+                  <CodeReferences filesReferences={question.fileReferences as any} />
                 </div>
               )}
             </SheetHeader>

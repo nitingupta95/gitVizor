@@ -28,6 +28,7 @@ model Project {
   updateAt            DateTime              @updatedAt
   name                String
   githubUrl           String
+  githubToken         String?
   deletedAt           DateTime?
   Commit              Commit[]
   SavedQuestion            Question[]

@@ -4,9 +4,8 @@ import {Octokit} from "octokit";
 import axios from "axios";
 import { aiSummariseCommit } from "./gemini";
 
-export const octokit= new Octokit({
-    auth: process.env.GITHUB_TOKEN
-})
+// Remove global octokit to use project-specific tokens
+
 
 
 
@@ -19,7 +18,7 @@ type Response = {
 };
 
 
-export const getCommitHashes = async (githubUrl: string): Promise<Response[]> => {
+export const getCommitHashes = async (githubUrl: string, githubToken?: string): Promise<Response[]> => {
   // Normalize URL (remove trailing slash + .git)
   let cleanUrl = githubUrl.trim();
   if (cleanUrl.endsWith("/")) cleanUrl = cleanUrl.slice(0, -1);
@@ -33,6 +32,9 @@ export const getCommitHashes = async (githubUrl: string): Promise<Response[]> =>
     throw new Error(`Invalid Github url: ${githubUrl}`);
   }
 
+  const octokit = new Octokit({
+    auth: githubToken
+  })
   const { data } = await octokit.rest.repos.listCommits({ owner, repo });
 
   const sortedCommits = data.sort(
@@ -53,11 +55,11 @@ export const getCommitHashes = async (githubUrl: string): Promise<Response[]> =>
 
  
 export const pollCommits= async (projectId:string)=>{
-    const {project, githubUrl}= await fetchProjectGithubUrl(projectId)
-    const commitHashes= await getCommitHashes(githubUrl)
+    const {project, githubUrl, githubToken}= await fetchProjectGithubUrl(projectId)
+    const commitHashes= await getCommitHashes(githubUrl, githubToken)
     const unpocessedCommits= await filterUnprocessedCommits(projectId, commitHashes);
     const summaryResponse= await Promise.allSettled(unpocessedCommits.map(commit=>{
-        return summariseCommit(githubUrl, commit.commitHash)
+        return summariseCommit(githubUrl, commit.commitHash, githubToken)
     }))
     const summaries= summaryResponse.map((response)=>{
         if(response.status==='fulfilled'){
@@ -86,10 +88,11 @@ export const pollCommits= async (projectId:string)=>{
 }
 
 
-async function summariseCommit(githubUrl: string, commitHash:string){
+async function summariseCommit(githubUrl: string, commitHash:string, githubToken?: string){
     const {data} = await axios.get(`${githubUrl}/commit/${commitHash}.diff`,{
         headers: {
-            Accept: 'application/vnd.github.v3.diff'
+            Accept: 'application/vnd.github.v3.diff',
+            ...(githubToken ? { Authorization: `token ${githubToken}` } : {})
         }
     })
     return await aiSummariseCommit(data) || ""
@@ -106,14 +109,15 @@ async function fetchProjectGithubUrl(projectId:string){
             id:projectId
         },
         select:{
-            githubUrl:true
+            githubUrl:true,
+            githubToken: true
         }
     })
      console.log("DEBUG - Result from DB:", project);
     if(!project?.githubUrl){
         throw new Error("Project does not have a github url")
     }
-    return {project,githubUrl:project?.githubUrl}
+    return {project, githubUrl: project.githubUrl, githubToken: project.githubToken ?? undefined }
 }
 
 async function filterUnprocessedCommits(projectId:string, commitHashes:Response[]){

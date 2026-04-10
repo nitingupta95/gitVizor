@@ -75,7 +75,3 @@ Answer in markdown syntax, with code snippets if needed. Be as detailed as possi
 
 
 
-console.log(askQuestion('what model are there in the schema?','cmef33mvp0000uy7fnw0o2wzh'))
-
-
-

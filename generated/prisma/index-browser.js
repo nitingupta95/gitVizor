@@ -139,6 +139,7 @@ exports.Prisma.ProjectScalarFieldEnum = {
   updateAt: 'updateAt',
   name: 'name',
   githubUrl: 'githubUrl',
+  githubToken: 'githubToken',
   deletedAt: 'deletedAt'
 };
 

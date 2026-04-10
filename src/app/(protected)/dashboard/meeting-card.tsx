@@ -26,6 +26,9 @@ const MeetingCard = () => {
       });
       return response.data;
     },
+    onError: (error: any) => {
+      toast.error('Failed to process meeting', { description: error.response?.data?.error || error.message });
+    }
   });
 
   const { project } = useProject();

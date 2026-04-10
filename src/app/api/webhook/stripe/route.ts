@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import Stripe from 'stripe';
 import { NextResponse , NextRequest} from 'next/server';
 import { db } from '@/server/db';
+import { clerkClient } from '@clerk/nextjs/server';
 
 const stripe= new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2025-07-30.basil'
@@ -19,8 +20,7 @@ export async function POST(req: Request) {
             process.env.STRIPE_WEBHOOK_SECRET!
         );
     } catch (error) {
-        NextResponse.json({error: 'Inavlid signature verification failed.'}, {status: 400});
-
+        return NextResponse.json({error: 'Invalid signature verification failed.'}, {status: 400});
     }
     const session= event.data.object as Stripe.Checkout.Session;
     console.log('Event type', event.type);
@@ -30,6 +30,26 @@ export async function POST(req: Request) {
         if(!userId || !credits){
             return NextResponse.json({error: 'Missing user ID or credits in session.'}, {status: 400});
         }
+
+        // Ensure user exists in the database
+        const user = await db.user.findUnique({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            const client = await clerkClient();
+            const clerkUser = await client.users.getUser(userId);
+            await db.user.create({
+                data: {
+                    id: userId,
+                    emailAddress: clerkUser.emailAddresses[0]?.emailAddress ?? "",
+                    imageUrl: clerkUser.imageUrl,
+                    firstName: clerkUser.firstName,
+                    lastName: clerkUser.lastName,
+                }
+            });
+        }
+
         await db.stripeTransaction.create({
             data: {
                 userId: userId,
@@ -40,7 +60,7 @@ export async function POST(req: Request) {
             where: {id: userId},
             data: {
                 credits: {
-                    increment: credits
+                    increment: Number(credits)
                 }
             }
         });

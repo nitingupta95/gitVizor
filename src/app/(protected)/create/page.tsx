@@ -7,33 +7,43 @@ import { Info } from 'lucide-react';
 import React from 'react'
 import { useForm } from "react-hook-form";
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import useProject from '@/hooks/use-project';
 
 type FormInput = {
   repoUrl: string
   projectName: string
-  githubToken?: string
+  githubToken: string
 }
 
 const Createpage = () => {
+  const router = useRouter();
   const { register, handleSubmit, reset } = useForm<FormInput>();
   const createproject= api.project.createProject.useMutation();
   const checkcredits = api.project.checkCredits.useMutation();
 
+  const { setProjectId } = useProject();
   const refetch= useRefetch();
 
 
   const  onSubmit=async(data: FormInput)=> {
     // window.alert(JSON.stringify(data,null,2))
     if(!!checkcredits.data){
+      if (!hasEnoughCredits) {
+        toast.error("Not enough credits to create project")
+        router.push('/billing');
+        return;
+      }
       await createproject.mutateAsync({
           githubUrl: data.repoUrl,
           name: data.projectName,
           githubToken: data.githubToken
-      },{
-          onSuccess: () => {
+       },{
+          onSuccess: (project) => {
               toast.success('project created successfully')
+              router.push('/dashboard')
+              setProjectId(project.id)
               refetch();
-              reset();
           },
           onError: () => {
               toast.error('Failed to create project')
@@ -43,13 +53,16 @@ const Createpage = () => {
       checkcredits.mutate({
         githubUrl: data.repoUrl,
         githubToken: data.githubToken
+      }, {
+        onError: (err) => {
+          toast.error('Failed to check credits', { description: err.message })
+        }
       })
     } 
   }
 
 
-  const hasEnoughCredits= checkcredits.data?.userCredits ? checkcredits.data.fileCount <= (checkcredits.data?.userCredits || 0) : true;
-
+  const hasEnoughCredits = checkcredits.data ? checkcredits.data.userCredits >= checkcredits.data.fileCount : true;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
@@ -81,8 +94,9 @@ const Createpage = () => {
               required
             />
             <Input
-              {...register('githubToken')}
-              placeholder="Github Token (Optional)"
+              {...register('githubToken', { required: true })}
+              placeholder="Github Token"
+              required
             />
 
             {checkcredits.data && (
@@ -95,7 +109,7 @@ const Createpage = () => {
               </div>
             )}
 
-            <Button type="submit" disabled={createproject.isPending || checkcredits.isPending || !hasEnoughCredits} className="w-full mt-4">
+            <Button type="submit" disabled={createproject.isPending || checkcredits.isPending} className="w-full mt-4">
              {!!checkcredits.data ? 'Create Project' : 'Check Credits'}
             </Button>
 

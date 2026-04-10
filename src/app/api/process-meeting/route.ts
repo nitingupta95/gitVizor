@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
                 start: summary.start,
                 end: summary.end,
                 headline: summary.headline,
-                summary: summary.summary,
+                Summary: summary.summary,
                 gist: summary.gist,
             }))
         })  

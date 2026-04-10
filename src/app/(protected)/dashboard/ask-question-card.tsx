@@ -49,18 +49,21 @@ const AskQuestionCard = () => {
 
 
     setLoading(true)
-    console.log(project.id)
-    const { output, filesReferences } = await askQuestion(question, project.id)
-    setOpen(true)
-    setFileReferences(filesReferences)
+    try {
+      const { output, filesReferences } = await askQuestion(question, project.id)
+      setOpen(true)
+      setFileReferences(filesReferences)
 
-    for await (const delta of readStreamableValue(output)) {
-      if (delta) {
-        setAnswer(ans => ans + delta)
+      for await (const delta of readStreamableValue(output)) {
+        if (delta) {
+          setAnswer(ans => ans + delta)
+        }
       }
+    } catch (error: any) {
+      toast.error('Failed to ask question', { description: error.message || 'The AI service may be down or over quota.' })
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
 
