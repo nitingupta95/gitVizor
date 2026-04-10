@@ -235,7 +235,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/nitingupta/Documents/Projects/gitvizor/githubSaas/generated/prisma",
+      "value": "/Users/nitingupta/iCloud Drive (Archive)/Documents/Projects/gitvizor/githubSaas/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -249,7 +249,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/nitingupta/Documents/Projects/gitvizor/githubSaas/prisma/schema.prisma",
+    "sourceFilePath": "/Users/nitingupta/iCloud Drive (Archive)/Documents/Projects/gitvizor/githubSaas/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
