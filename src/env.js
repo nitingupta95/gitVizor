@@ -13,7 +13,6 @@ export const env = createEnv({
     OPENAI_API_KEY: z.string(),
     STRIPE_SECRET_KEY: z.string(),
     STRIPE_WEBHOOK_SECRET: z.string(),
-    GITHUB_TOKEN: z.string(),
   },
   client: {
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
@@ -24,7 +23,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string(),
     NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string(),
     NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
-    STRIPE_PUBLISHABLE_KEY: z.string(),
+    STRIPE_PUBLISHABLE_KEY: z.string().optional(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -37,6 +36,7 @@ export const env = createEnv({
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_API_VERSION: process.env.STRIPE_API_VERSION,
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,
     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
     NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
