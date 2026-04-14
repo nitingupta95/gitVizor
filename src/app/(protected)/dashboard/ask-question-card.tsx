@@ -25,6 +25,7 @@ import { CodeReferences } from './code-refrences'
 import { api } from '@/trpc/react'
 import { toast } from 'sonner'
 import useRefetch from '@/hooks/use-refetch'
+import { Sparkles } from 'lucide-react'
 
 const AskQuestionCard = () => {
   const { project } = useProject()
@@ -72,18 +73,20 @@ const AskQuestionCard = () => {
   return (
     <>
      <Dialog open={open} onOpenChange={setOpen}>
-  <DialogContent className='sm:max-w-[80vw] max-h-[80vh] overflow-auto border border-border/60 bg-background/80 backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,0.35)]'>
+  <DialogContent className='sm:max-w-[80vw] max-h-[80vh] overflow-auto border border-border/40 bg-background/95 backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,0.4)]'>
     <DialogHeader>
       <DialogTitle className="flex items-center gap-2">
-        <Image src="/log.png" alt="logo" width={40} height={40} />
-        Answer
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+          <Sparkles className="h-4 w-4 text-primary" />
+        </div>
+        AI Answer
       </DialogTitle>
     </DialogHeader>
 
     <div className="mt-4">
       <MDEditor.Markdown 
         source={answer} 
-        className='max-w-full !h-64 overflow-auto border border-border/60 rounded-lg p-3 bg-muted/30'
+        className='max-w-full !h-64 overflow-auto border border-border/40 rounded-xl p-4 bg-muted/30'
       />
 
       <div className="mt-4">
@@ -92,7 +95,7 @@ const AskQuestionCard = () => {
 
       {/* Buttons at the bottom */}
       <div className="mt-6 flex justify-end gap-2">
-        <Button type='button' variant='outline' onClick={()=>setOpen(false)}>
+        <Button type='button' variant='outline' onClick={()=>setOpen(false)} className="border-border/40">
           Close
         </Button>
         <Button
@@ -109,6 +112,7 @@ const AskQuestionCard = () => {
               }
             )
           }}
+          className="bg-primary hover:bg-primary/90 shadow-md shadow-primary/20"
         >
           Save Answer
         </Button>
@@ -118,9 +122,14 @@ const AskQuestionCard = () => {
 </Dialog>
 
 
-      <Card className="relative col-span-3 border border-border/60 bg-card/50 shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
+      <Card className="relative col-span-3 border border-border/40 bg-card/60 shadow-[0_4px_20px_rgba(0,0,0,0.12)] backdrop-blur-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.18)] transition-shadow duration-300">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold tracking-tight">Ask a question</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-base font-semibold tracking-tight">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+            </div>
+            Ask a question
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSubmit}>
@@ -128,9 +137,10 @@ const AskQuestionCard = () => {
               placeholder="Which file should I edit to change the home page?"
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
+              className="border-border/40 bg-background/50 focus:border-primary/30 transition-colors"
             />
             <div className="h-4" />
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className="bg-primary hover:bg-primary/90 shadow-md shadow-primary/20 transition-all">
               {loading ? 'Asking...' : 'Ask GitVizor!'}
             </Button>
           </form>

@@ -21,15 +21,17 @@ const page = () => {
     <div className="space-y-6">  
       {/* {project?.id} */}
       <div className="flex items-center justify-between flex-wrap gap-y-4">
-        <div className="rounded-xl border border-border/60 bg-card/40 px-4 py-3 shadow-[0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur">
+        <div className="rounded-xl border border-border/40 bg-card/60 px-5 py-3.5 shadow-[0_4px_16px_rgba(0,0,0,0.1)] backdrop-blur-sm">
           <div className="flex items-center">
-            <Github className='size-5 text-foreground'/>
-            <div className='ml-2'>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+              <Github className='size-4 text-primary'/>
+            </div>
+            <div className='ml-3'>
               <p className='text-sm font-medium text-foreground'>
                 This project is linked to {''}
-                <Link href={project?.githubUrl ?? ""} className='inline-flex items-center text-foreground/70 hover:text-foreground hover:underline'>
+                <Link href={project?.githubUrl ?? ""} className='inline-flex items-center text-primary hover:text-primary/80 hover:underline transition-colors'>
                   {project?.githubUrl}
-                  <ExternalLink className='m-1 size-4'/>
+                  <ExternalLink className='m-1 size-3.5'/>
                 </Link>
               </p>
             </div>

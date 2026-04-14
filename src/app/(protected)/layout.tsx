@@ -13,15 +13,15 @@ const layout = ({ children }: Props) => {
     <SidebarProvider>
         <AppSidebar/>
         <main className='w-full m-2'>
-            <div className="flex items-center gap-2 border-sidebar-border/60 bg-sidebar/80 border shadow-sm backdrop-blur rounded-lg p-2 px-4">
+            <div className="flex items-center gap-2 border border-sidebar-border/40 bg-sidebar/60 shadow-[0_2px_12px_rgba(0,0,0,0.15)] backdrop-blur-xl rounded-xl p-2.5 px-4">
                 {/* {Search Bar} */}
                 <div className='ml-auto'></div>
                 <ThemeToggle />
                 <UserButton/>
             </div>
-            <div className="h-4"></div>
+            <div className="h-3"></div>
             {/* {main content} */}
-            <div className="border-sidebar-border/60 bg-sidebar border shadow-sm rounded-lg overflow-y-scroll h-[calc(100vh-6rem)] p-4">
+            <div className="border border-sidebar-border/40 bg-sidebar/60 shadow-[0_4px_20px_rgba(0,0,0,0.15)] backdrop-blur-xl rounded-xl overflow-y-scroll h-[calc(100vh-5.5rem)] p-6">
                 {children}
             </div>
         </main>

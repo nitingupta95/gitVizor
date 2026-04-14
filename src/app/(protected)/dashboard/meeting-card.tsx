@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import useProject from "@/hooks/use-project";
 import { useDropzone } from "react-dropzone";
 import React from "react";
-import { Presentation } from "lucide-react";
+import { Presentation, Upload } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -90,22 +90,24 @@ const MeetingCard = () => {
 
   return (
     <Card
-      className="col-span-2 flex flex-col items-center justify-center p-10 border border-dashed border-border/60 bg-gradient-to-b from-card/60 via-card/40 to-card/30 hover:from-card/70 hover:to-card/40 shadow-[0_10px_30px_rgba(0,0,0,0.25)] transition"
+      className="col-span-2 flex flex-col items-center justify-center p-10 border border-dashed border-border/40 bg-card/40 hover:bg-card/60 hover:border-primary/20 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.18)] backdrop-blur-sm transition-all duration-300 cursor-pointer group"
       {...getRootProps()}
     >
       <input {...getInputProps()} />
       {isUploading ? (
-        <div className="flex flex-col items-center gap-2">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary"></div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="animate-spin rounded-full h-10 w-10 border-2 border-primary/20 border-t-primary"></div>
           <p className="text-sm text-muted-foreground">Uploading...</p>
         </div>
       ) : (
         <>
-          <Presentation className="h-10 w-10 animate-bounce" />
-          <h3 className="mt-2 text-sm font-semibold text-foreground tracking-tight">
-            Create a new meeting
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 group-hover:bg-primary/15 transition-colors">
+            <Upload className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
+          </div>
+          <h3 className="mt-3 text-sm font-semibold text-foreground tracking-tight">
+            Upload a meeting
           </h3>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-1 text-xs text-muted-foreground text-center max-w-[200px]">
             Drop a video or audio file here, or click to select
           </p>
         </>
@@ -115,4 +117,3 @@ const MeetingCard = () => {
 };
 
 export default MeetingCard;
-
