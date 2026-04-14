@@ -32,7 +32,7 @@ export async function createCheckoutSession(credits: number) {
         cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/billing`,
         client_reference_id: userId.toString(),
         metadata: { 
-            credits 
+            credits: credits.toString() 
         },
     })
     return redirect(session.url!)
