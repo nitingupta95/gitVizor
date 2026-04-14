@@ -3,15 +3,15 @@ import useProject from '@/hooks/use-project';
 import { useUser } from '@clerk/nextjs'
 import { ExternalLink, Github } from 'lucide-react';
 import Link from 'next/link';
-
 import React from 'react'
+import dynamic from 'next/dynamic';
 import CommitLog from './commit-log';
 import AskQuestionCard from './ask-question-card';
 import MeetingCard from './meeting-card';
 import ArchiveButton from './archive-button';
-const InviteButton= dynamic(()=> import('./invite-button'),{ssr: false});
 import TeamMember from './team-member';
-import dynamic from 'next/dynamic';
+
+const InviteButton = dynamic(() => import('./invite-button'), { ssr: false });
 
 const page = () => {
     const { user } = useUser();

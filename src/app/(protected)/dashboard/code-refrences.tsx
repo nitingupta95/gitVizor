@@ -3,7 +3,7 @@ import { Tabs, TabsContent } from '@/components/ui/tabs'
 import React from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { lucario } from "react-syntax-highlighter/dist/esm/styles/prism"
-import { cn } from "@/lib/utils"   // make sure this exists in your project
+import { cn } from "@/lib/utils"
 
 type Props = {
   filesReferences: { fileName: string; sourceCode: string; summary: string }[]
