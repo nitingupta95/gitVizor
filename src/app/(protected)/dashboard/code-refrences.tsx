@@ -16,7 +16,7 @@ export const CodeReferences = ({ filesReferences }: Props) => {
   return (
     <div className="max-w-[70vw]">
       <Tabs value={tab} onValueChange={setTab}>
-        <div className="overflow-scroll flex gap-2 bg-gray-200 p-1 rounded-md">
+        <div className="overflow-scroll flex gap-2 bg-muted p-1 rounded-md">
           {filesReferences.map((file) => (
             <button
               onClick={() => setTab(file.fileName)}

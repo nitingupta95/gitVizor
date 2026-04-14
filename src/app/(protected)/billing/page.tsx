@@ -21,45 +21,57 @@ const BillingPage = () => {
   const price = (creditsToBuyAmount / 50).toFixed(2)
 
   return (
-    <div>
-      <h1 className="text-xl font-semibold">Billing</h1>
-      <div className="h-2" />
-
-      <p className="text-sm text-gray-500">
-        You currently have {user?.credits ?? 0} credits.
-      </p>
-
-      <div className="h-2" />
-      <div className="bg-blue-50 px-4 py-2 rounded-md border border-blue-200 text-blue-700">
-        <div className="flex items-center gap-2">
-          <Info className="size-4" />
-          <p className="text-sm">
-            Each credit allows you to index 1 file in a repository.
-          </p>
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-border/60 bg-card/40 p-6 shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-semibold tracking-tight">Billing</h1>
+            <p className="text-sm text-muted-foreground">
+              You currently have {user?.credits ?? 0} credits.
+            </p>
+          </div>
+          <div className="rounded-full border border-border/60 bg-muted/40 px-3 py-1 text-xs text-muted-foreground">
+            ${price} total
+          </div>
         </div>
-        <p className="text-sm">
-          E.g. If your project has 100 files, you will need 100 credits to index it.
-        </p>
       </div>
 
-      <div className="h-4" />
-      <Slider
-        defaultValue={[100]}
-        max={1000}
-        min={10}
-        step={10}
-        onValueChange={setCreditsToBuy}
-        value={creditsToBuy}
-      />
+      <div className="rounded-2xl border border-border/60 bg-card/40 p-6 shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 rounded-full border border-border/60 bg-muted/40 p-1">
+            <Info className="size-4" />
+          </div>
+          <div className="space-y-1">
+            <p className="text-sm text-foreground">
+              Each credit allows you to index 1 file in a repository.
+            </p>
+            <p className="text-sm text-muted-foreground">
+              E.g. If your project has 100 files, you will need 100 credits to index it.
+            </p>
+          </div>
+        </div>
 
-      <div className="h-4" />
-      <Button
-        onClick={() => {
-          createCheckoutSession(creditsToBuyAmount)
-        }}
-      >
-        Buy {creditsToBuyAmount} credits for ${price}
-      </Button>
+        <div className="mt-6">
+          <Slider
+            defaultValue={[100]}
+            max={1000}
+            min={10}
+            step={10}
+            onValueChange={setCreditsToBuy}
+            value={creditsToBuy}
+          />
+        </div>
+
+        <div className="mt-6">
+          <Button
+            onClick={() => {
+              createCheckoutSession(creditsToBuyAmount)
+            }}
+          >
+            Buy {creditsToBuyAmount} credits for ${price}
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

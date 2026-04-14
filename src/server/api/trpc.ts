@@ -125,4 +125,4 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
-export const protectedprocedure =t.procedure.use(isAuthenticated);
+export const protectedprocedure = t.procedure.use(isAuthenticated);

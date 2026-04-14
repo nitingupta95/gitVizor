@@ -22,7 +22,7 @@ const QApage = () => {
         {questions?.map((question, index) => {
           return <React.Fragment key={question.id}>
             <SheetTrigger onClick={() => setQuestionIndex(index)} >
-              <div className="flex items-center gap-4 bg-white rounded-lg p-4 shadow-border">
+              <div className="flex items-center gap-4 bg-card/50 border border-border/60 rounded-xl p-4 shadow-[0_10px_30px_rgba(0,0,0,0.2)] hover:bg-card/70 transition">
                 {question.User?.imageUrl && (
                   <img
                     src={question.User.imageUrl}
@@ -34,14 +34,14 @@ const QApage = () => {
                 )}
                 <div className='text-left flex flex-col'>
                   <div className='flex items-center gap-2'>
-                    <p className='text-gray-700 line-clamp-1 text-lg font-medium'>
+                    <p className='text-foreground line-clamp-1 text-lg font-medium'>
                       {question.question}
                     </p>
-                    <span className='text-xs text-gray-400 whitespace-nowrap'>
+                    <span className='text-xs text-muted-foreground whitespace-nowrap'>
                       {new Date(question.createdAt).toLocaleDateString()}
                     </span>
                   </div>
-                  <p className='text-gray-500 line-clamp-1 text-sm'>
+                  <p className='text-muted-foreground line-clamp-1 text-sm'>
                     {question.answer}
                   </p>
                 </div>
@@ -61,7 +61,7 @@ const QApage = () => {
               {/* Display the answer properly */}
               <MDEditor.Markdown 
                 source={question.answer ?? "No answer yet"} 
-                className='max-w-full !h-64 overflow-auto border rounded p-2'
+                className='max-w-full !h-64 overflow-auto border border-border/60 rounded-lg p-3 bg-muted/20'
               />
 
               {/* Display code references if any */}

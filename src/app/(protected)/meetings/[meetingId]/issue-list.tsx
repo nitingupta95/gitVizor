@@ -20,17 +20,17 @@ const IssueList = ({ meetingId }: Props) => {
     }
   return (
     <div className='p-8'>
-        <div className='mx-auto flex max-w-2xl items-center justify-between gap-x-8 border-b pb-6 lg:mx-0 lg:max-w-none'>
+        <div className='mx-auto flex max-w-2xl items-center justify-between gap-x-8 border-b border-border/60 pb-6 lg:mx-0 lg:max-w-none'>
             <div className="flex items-center gap-x-8">
-                <div className="rounded-full border bg-white p-3">
+                <div className="rounded-full border border-border/60 bg-card/60 p-3 shadow-sm">
                     <VideoIcon className='h-6 w-6'></VideoIcon>
 
                 </div>
                 <h1>
-                    <div className="text-sm leading-6 text-gray-600">
+                    <div className="text-sm leading-6 text-muted-foreground">
                         Meeting on {""}{new Date(meeting.createdAt).toLocaleDateString()}
                     </div>
-                    <div className="mt-1 text-base font-semibold leading-6 text-gray-900 ">
+                    <div className="mt-1 text-base font-semibold leading-6 text-foreground ">
                         {meeting.name}
                     </div>
                 </h1>
@@ -64,13 +64,13 @@ function IssueCard({issue}: {issue: NonNullable<RouterOutputs["project"]["getMee
                     <DialogDescription>
                         {new Date(issue.createdAt).toLocaleDateString()}
                     </DialogDescription>
-                    <p className='mt-2 border-1-4 border-gray-300 bg-gray-50 p-4'>
+                    <p className='mt-2 border-l-4 border-border bg-muted p-4'>
                         
                         {issue.headline}
                     </p>
-                    <blockquote className='mt-2 border-l-4 border-gray-300 bg-gray-50 p-4'>
-                        <span className='text-sm text-gray-600'>{issue.start} - {issue.end}</span>
-                        <p className="font-medium italic leading-relaxed text-gray-900">
+                    <blockquote className='mt-2 border-l-4 border-border bg-muted p-4'>
+                        <span className='text-sm text-muted-foreground'>{issue.start} - {issue.end}</span>
+                        <p className="font-medium italic leading-relaxed text-foreground">
                             {issue.Summary}
                         </p>
                     </blockquote> 

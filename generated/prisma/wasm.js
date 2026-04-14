@@ -140,7 +140,8 @@ exports.Prisma.ProjectScalarFieldEnum = {
   name: 'name',
   githubUrl: 'githubUrl',
   githubToken: 'githubToken',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  status: 'status'
 };
 
 exports.Prisma.QuestionScalarFieldEnum = {
@@ -151,7 +152,8 @@ exports.Prisma.QuestionScalarFieldEnum = {
   answer: 'answer',
   fileReferences: 'fileReferences',
   projectId: 'projectId',
-  userId: 'userId'
+  userId: 'userId',
+  meetingId: 'meetingId'
 };
 
 exports.Prisma.SourceCodeEmbeddingScalarFieldEnum = {
@@ -186,8 +188,11 @@ exports.Prisma.MeetingScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   name: 'name',
-  meetingUrl: 'meetingUrl',
+  cloudinaryUrl: 'cloudinaryUrl',
+  cloudinaryPublicId: 'cloudinaryPublicId',
+  summary: 'summary',
   projectId: 'projectId',
+  userId: 'userId',
   status: 'status'
 };
 
@@ -195,11 +200,10 @@ exports.Prisma.IssueScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  start: 'start',
-  end: 'end',
-  gist: 'gist',
-  headline: 'headline',
-  Summary: 'Summary',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
   meetingId: 'meetingId'
 };
 
@@ -236,6 +240,13 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.ProjectStatus = exports.$Enums.ProjectStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
 exports.MeetingStatus = exports.$Enums.MeetingStatus = {
   PROCESSING: 'PROCESSING',
   COMPLETED: 'COMPLETED',

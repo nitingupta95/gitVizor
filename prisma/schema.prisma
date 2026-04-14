@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Commit {
@@ -36,6 +35,14 @@ model Project {
   UserToProject       UserToProject[]
 
   meetings Meeting[]
+  status   ProjectStatus @default(PENDING)
+}
+
+enum ProjectStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
 }
 
 model Question {
@@ -47,8 +54,10 @@ model Question {
   fileReferences Json?
   projectId      String
   userId         String
+  meetingId      String?
   Project        Project  @relation(fields: [projectId], references: [id])
   User           User     @relation(fields: [userId], references: [id])
+  Meeting        Meeting? @relation(fields: [meetingId], references: [id])
 }
 
 model SourceCodeEmbedding {
@@ -73,7 +82,7 @@ model User {
   QuestionAsked      Question[]
   UserToProject UserToProject[]
   StripeTransactions StripeTransaction[]
-
+  meetings      Meeting[]
 }
 
 model UserToProject {
@@ -88,44 +97,46 @@ model UserToProject {
   @@unique([userId, projectId])
 }
 
-model Meeting{
-  id String @id  @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  name String
-  meetingUrl String
-  projectId String
-  Project   Project  @relation(fields: [projectId], references: [id])
-  status MeetingStatus @default(PROCESSING)
-  issues Issue[]
+model Meeting {
+  id                 String        @id @default(cuid())
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  name               String
+  cloudinaryUrl      String
+  cloudinaryPublicId String
+  summary            String?
+  projectId          String
+  userId             String
+  Project            Project       @relation(fields: [projectId], references: [id])
+  User               User          @relation(fields: [userId], references: [id])
+  status             MeetingStatus @default(PROCESSING)
+  issues             Issue[]
+  questions          Question[]
 }
 
-model Issue{
-  id String @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
- 
-  start String
-  end String
-  gist  String
-  headline String
-  Summary String
-  meetingId String
-  meeting Meeting @relation(fields: [meetingId], references: [id]) 
+model Issue {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String
+  status      String
+  priority    String
+  meetingId   String
+  Meeting     Meeting  @relation(fields: [meetingId], references: [id])
 }
-enum  MeetingStatus{
+
+enum MeetingStatus {
   PROCESSING
   COMPLETED
   FAILED
 }
 
-
-model StripeTransaction{
-  id String @id @default(cuid())
+model StripeTransaction {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) 
-  userId String
-  user User @relation(fields: [userId], references: [id])
-  credits Int
-  
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  credits   Int
 }

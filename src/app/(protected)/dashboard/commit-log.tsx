@@ -32,23 +32,23 @@ const CommitLog = () => {
                 "absolute left-0 top-0 flex w-6 justify-center"
               )}
             >
-              <div className="w-px translate-x-1 bg-gray-200"></div>
+              <div className="w-px translate-x-1 bg-border"></div>
             </div>
 
             <img
               src={commit.commitAuthorAvatar}
               alt="commit avatar"
-              className="relative mt-4 size-8 flex-none rounded-full bg-gray-50"
+              className="relative mt-4 size-8 flex-none rounded-full bg-muted"
             />
 
-            <div className="flex-auto rounded-md bg-white p-3 ring-1 ring-inset ring-gray-200">
+            <div className="flex-auto rounded-lg bg-card/50 p-4 ring-1 ring-inset ring-border/60 shadow-[0_10px_30px_rgba(0,0,0,0.2)]">
               <div className="flex justify-between gap-x-4">
                 <Link
                   target="_blank"
                   href={`${project?.githubUrl}/commit/${commit.commitHash}`}
-                  className="py-0.5 text-xs leading-5 text-gray-500"
+                  className="py-0.5 text-xs leading-5 text-muted-foreground"
                 >
-                  <span className="font-medium text-gray-900">
+                  <span className="font-medium text-foreground">
                     {commit.commitAuthorName}
                   </span>{" "}
                   <span className="inline-flex items-center">
@@ -61,7 +61,7 @@ const CommitLog = () => {
                 <div className='font-semibold'>
                     {commit.commitMessage}
                 </div>
-                <pre className='mt-2 whitespace-pre-wrap text-sm leading-6 text-gray-500 '>
+                <pre className='mt-2 whitespace-pre-wrap text-sm leading-6 text-muted-foreground'>
                     {commit.summary}
                 </pre>
 

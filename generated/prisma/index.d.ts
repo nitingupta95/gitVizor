@@ -63,7 +63,17 @@ export type StripeTransaction = $Result.DefaultSelection<Prisma.$StripeTransacti
  * Enums
  */
 export namespace $Enums {
-  export const MeetingStatus: {
+  export const ProjectStatus: {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
+export type ProjectStatus = (typeof ProjectStatus)[keyof typeof ProjectStatus]
+
+
+export const MeetingStatus: {
   PROCESSING: 'PROCESSING',
   COMPLETED: 'COMPLETED',
   FAILED: 'FAILED'
@@ -72,6 +82,10 @@ export namespace $Enums {
 export type MeetingStatus = (typeof MeetingStatus)[keyof typeof MeetingStatus]
 
 }
+
+export type ProjectStatus = $Enums.ProjectStatus
+
+export const ProjectStatus: typeof $Enums.ProjectStatus
 
 export type MeetingStatus = $Enums.MeetingStatus
 
@@ -1672,12 +1686,14 @@ export namespace Prisma {
     QuestionAsked: number
     UserToProject: number
     StripeTransactions: number
+    meetings: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     QuestionAsked?: boolean | UserCountOutputTypeCountQuestionAskedArgs
     UserToProject?: boolean | UserCountOutputTypeCountUserToProjectArgs
     StripeTransactions?: boolean | UserCountOutputTypeCountStripeTransactionsArgs
+    meetings?: boolean | UserCountOutputTypeCountMeetingsArgs
   }
 
   // Custom InputTypes
@@ -1712,6 +1728,13 @@ export namespace Prisma {
     where?: StripeTransactionWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingWhereInput
+  }
+
 
   /**
    * Count Type MeetingCountOutputType
@@ -1719,10 +1742,12 @@ export namespace Prisma {
 
   export type MeetingCountOutputType = {
     issues: number
+    questions: number
   }
 
   export type MeetingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     issues?: boolean | MeetingCountOutputTypeCountIssuesArgs
+    questions?: boolean | MeetingCountOutputTypeCountQuestionsArgs
   }
 
   // Custom InputTypes
@@ -1741,6 +1766,13 @@ export namespace Prisma {
    */
   export type MeetingCountOutputTypeCountIssuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: IssueWhereInput
+  }
+
+  /**
+   * MeetingCountOutputType without action
+   */
+  export type MeetingCountOutputTypeCountQuestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuestionWhereInput
   }
 
 
@@ -2889,6 +2921,7 @@ export namespace Prisma {
     githubUrl: string | null
     githubToken: string | null
     deletedAt: Date | null
+    status: $Enums.ProjectStatus | null
   }
 
   export type ProjectMaxAggregateOutputType = {
@@ -2899,6 +2932,7 @@ export namespace Prisma {
     githubUrl: string | null
     githubToken: string | null
     deletedAt: Date | null
+    status: $Enums.ProjectStatus | null
   }
 
   export type ProjectCountAggregateOutputType = {
@@ -2909,6 +2943,7 @@ export namespace Prisma {
     githubUrl: number
     githubToken: number
     deletedAt: number
+    status: number
     _all: number
   }
 
@@ -2921,6 +2956,7 @@ export namespace Prisma {
     githubUrl?: true
     githubToken?: true
     deletedAt?: true
+    status?: true
   }
 
   export type ProjectMaxAggregateInputType = {
@@ -2931,6 +2967,7 @@ export namespace Prisma {
     githubUrl?: true
     githubToken?: true
     deletedAt?: true
+    status?: true
   }
 
   export type ProjectCountAggregateInputType = {
@@ -2941,6 +2978,7 @@ export namespace Prisma {
     githubUrl?: true
     githubToken?: true
     deletedAt?: true
+    status?: true
     _all?: true
   }
 
@@ -3024,6 +3062,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken: string | null
     deletedAt: Date | null
+    status: $Enums.ProjectStatus
     _count: ProjectCountAggregateOutputType | null
     _min: ProjectMinAggregateOutputType | null
     _max: ProjectMaxAggregateOutputType | null
@@ -3051,6 +3090,7 @@ export namespace Prisma {
     githubUrl?: boolean
     githubToken?: boolean
     deletedAt?: boolean
+    status?: boolean
     Commit?: boolean | Project$CommitArgs<ExtArgs>
     SavedQuestion?: boolean | Project$SavedQuestionArgs<ExtArgs>
     SourceCodeEmbedding?: boolean | Project$SourceCodeEmbeddingArgs<ExtArgs>
@@ -3067,6 +3107,7 @@ export namespace Prisma {
     githubUrl?: boolean
     githubToken?: boolean
     deletedAt?: boolean
+    status?: boolean
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3077,6 +3118,7 @@ export namespace Prisma {
     githubUrl?: boolean
     githubToken?: boolean
     deletedAt?: boolean
+    status?: boolean
   }, ExtArgs["result"]["project"]>
 
   export type ProjectSelectScalar = {
@@ -3087,9 +3129,10 @@ export namespace Prisma {
     githubUrl?: boolean
     githubToken?: boolean
     deletedAt?: boolean
+    status?: boolean
   }
 
-  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updateAt" | "name" | "githubUrl" | "githubToken" | "deletedAt", ExtArgs["result"]["project"]>
+  export type ProjectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updateAt" | "name" | "githubUrl" | "githubToken" | "deletedAt" | "status", ExtArgs["result"]["project"]>
   export type ProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Commit?: boolean | Project$CommitArgs<ExtArgs>
     SavedQuestion?: boolean | Project$SavedQuestionArgs<ExtArgs>
@@ -3118,6 +3161,7 @@ export namespace Prisma {
       githubUrl: string
       githubToken: string | null
       deletedAt: Date | null
+      status: $Enums.ProjectStatus
     }, ExtArgs["result"]["project"]>
     composites: {}
   }
@@ -3553,6 +3597,7 @@ export namespace Prisma {
     readonly githubUrl: FieldRef<"Project", 'String'>
     readonly githubToken: FieldRef<"Project", 'String'>
     readonly deletedAt: FieldRef<"Project", 'DateTime'>
+    readonly status: FieldRef<"Project", 'ProjectStatus'>
   }
     
 
@@ -4097,6 +4142,7 @@ export namespace Prisma {
     answer: string | null
     projectId: string | null
     userId: string | null
+    meetingId: string | null
   }
 
   export type QuestionMaxAggregateOutputType = {
@@ -4107,6 +4153,7 @@ export namespace Prisma {
     answer: string | null
     projectId: string | null
     userId: string | null
+    meetingId: string | null
   }
 
   export type QuestionCountAggregateOutputType = {
@@ -4118,6 +4165,7 @@ export namespace Prisma {
     fileReferences: number
     projectId: number
     userId: number
+    meetingId: number
     _all: number
   }
 
@@ -4130,6 +4178,7 @@ export namespace Prisma {
     answer?: true
     projectId?: true
     userId?: true
+    meetingId?: true
   }
 
   export type QuestionMaxAggregateInputType = {
@@ -4140,6 +4189,7 @@ export namespace Prisma {
     answer?: true
     projectId?: true
     userId?: true
+    meetingId?: true
   }
 
   export type QuestionCountAggregateInputType = {
@@ -4151,6 +4201,7 @@ export namespace Prisma {
     fileReferences?: true
     projectId?: true
     userId?: true
+    meetingId?: true
     _all?: true
   }
 
@@ -4235,6 +4286,7 @@ export namespace Prisma {
     fileReferences: JsonValue | null
     projectId: string
     userId: string
+    meetingId: string | null
     _count: QuestionCountAggregateOutputType | null
     _min: QuestionMinAggregateOutputType | null
     _max: QuestionMaxAggregateOutputType | null
@@ -4263,8 +4315,10 @@ export namespace Prisma {
     fileReferences?: boolean
     projectId?: boolean
     userId?: boolean
+    meetingId?: boolean
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
+    Meeting?: boolean | Question$MeetingArgs<ExtArgs>
   }, ExtArgs["result"]["question"]>
 
   export type QuestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4276,8 +4330,10 @@ export namespace Prisma {
     fileReferences?: boolean
     projectId?: boolean
     userId?: boolean
+    meetingId?: boolean
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
+    Meeting?: boolean | Question$MeetingArgs<ExtArgs>
   }, ExtArgs["result"]["question"]>
 
   export type QuestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4289,8 +4345,10 @@ export namespace Prisma {
     fileReferences?: boolean
     projectId?: boolean
     userId?: boolean
+    meetingId?: boolean
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
+    Meeting?: boolean | Question$MeetingArgs<ExtArgs>
   }, ExtArgs["result"]["question"]>
 
   export type QuestionSelectScalar = {
@@ -4302,20 +4360,24 @@ export namespace Prisma {
     fileReferences?: boolean
     projectId?: boolean
     userId?: boolean
+    meetingId?: boolean
   }
 
-  export type QuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updateAt" | "question" | "answer" | "fileReferences" | "projectId" | "userId", ExtArgs["result"]["question"]>
+  export type QuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updateAt" | "question" | "answer" | "fileReferences" | "projectId" | "userId" | "meetingId", ExtArgs["result"]["question"]>
   export type QuestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
+    Meeting?: boolean | Question$MeetingArgs<ExtArgs>
   }
   export type QuestionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
+    Meeting?: boolean | Question$MeetingArgs<ExtArgs>
   }
   export type QuestionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
+    Meeting?: boolean | Question$MeetingArgs<ExtArgs>
   }
 
   export type $QuestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4323,6 +4385,7 @@ export namespace Prisma {
     objects: {
       Project: Prisma.$ProjectPayload<ExtArgs>
       User: Prisma.$UserPayload<ExtArgs>
+      Meeting: Prisma.$MeetingPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4333,6 +4396,7 @@ export namespace Prisma {
       fileReferences: Prisma.JsonValue | null
       projectId: string
       userId: string
+      meetingId: string | null
     }, ExtArgs["result"]["question"]>
     composites: {}
   }
@@ -4729,6 +4793,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     Project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Meeting<T extends Question$MeetingArgs<ExtArgs> = {}>(args?: Subset<T, Question$MeetingArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4766,6 +4831,7 @@ export namespace Prisma {
     readonly fileReferences: FieldRef<"Question", 'Json'>
     readonly projectId: FieldRef<"Question", 'String'>
     readonly userId: FieldRef<"Question", 'String'>
+    readonly meetingId: FieldRef<"Question", 'String'>
   }
     
 
@@ -5159,6 +5225,25 @@ export namespace Prisma {
      * Limit how many Questions to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Question.Meeting
+   */
+  export type Question$MeetingArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    where?: MeetingWhereInput
   }
 
   /**
@@ -6463,6 +6548,7 @@ export namespace Prisma {
     QuestionAsked?: boolean | User$QuestionAskedArgs<ExtArgs>
     UserToProject?: boolean | User$UserToProjectArgs<ExtArgs>
     StripeTransactions?: boolean | User$StripeTransactionsArgs<ExtArgs>
+    meetings?: boolean | User$meetingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -6504,6 +6590,7 @@ export namespace Prisma {
     QuestionAsked?: boolean | User$QuestionAskedArgs<ExtArgs>
     UserToProject?: boolean | User$UserToProjectArgs<ExtArgs>
     StripeTransactions?: boolean | User$StripeTransactionsArgs<ExtArgs>
+    meetings?: boolean | User$meetingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -6515,6 +6602,7 @@ export namespace Prisma {
       QuestionAsked: Prisma.$QuestionPayload<ExtArgs>[]
       UserToProject: Prisma.$UserToProjectPayload<ExtArgs>[]
       StripeTransactions: Prisma.$StripeTransactionPayload<ExtArgs>[]
+      meetings: Prisma.$MeetingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6922,6 +7010,7 @@ export namespace Prisma {
     QuestionAsked<T extends User$QuestionAskedArgs<ExtArgs> = {}>(args?: Subset<T, User$QuestionAskedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     UserToProject<T extends User$UserToProjectArgs<ExtArgs> = {}>(args?: Subset<T, User$UserToProjectArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserToProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     StripeTransactions<T extends User$StripeTransactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$StripeTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StripeTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    meetings<T extends User$meetingsArgs<ExtArgs> = {}>(args?: Subset<T, User$meetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7416,6 +7505,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: StripeTransactionScalarFieldEnum | StripeTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * User.meetings
+   */
+  export type User$meetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    where?: MeetingWhereInput
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    cursor?: MeetingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
   }
 
   /**
@@ -8518,8 +8631,11 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     name: string | null
-    meetingUrl: string | null
+    cloudinaryUrl: string | null
+    cloudinaryPublicId: string | null
+    summary: string | null
     projectId: string | null
+    userId: string | null
     status: $Enums.MeetingStatus | null
   }
 
@@ -8528,8 +8644,11 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     name: string | null
-    meetingUrl: string | null
+    cloudinaryUrl: string | null
+    cloudinaryPublicId: string | null
+    summary: string | null
     projectId: string | null
+    userId: string | null
     status: $Enums.MeetingStatus | null
   }
 
@@ -8538,8 +8657,11 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     name: number
-    meetingUrl: number
+    cloudinaryUrl: number
+    cloudinaryPublicId: number
+    summary: number
     projectId: number
+    userId: number
     status: number
     _all: number
   }
@@ -8550,8 +8672,11 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     name?: true
-    meetingUrl?: true
+    cloudinaryUrl?: true
+    cloudinaryPublicId?: true
+    summary?: true
     projectId?: true
+    userId?: true
     status?: true
   }
 
@@ -8560,8 +8685,11 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     name?: true
-    meetingUrl?: true
+    cloudinaryUrl?: true
+    cloudinaryPublicId?: true
+    summary?: true
     projectId?: true
+    userId?: true
     status?: true
   }
 
@@ -8570,8 +8698,11 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     name?: true
-    meetingUrl?: true
+    cloudinaryUrl?: true
+    cloudinaryPublicId?: true
+    summary?: true
     projectId?: true
+    userId?: true
     status?: true
     _all?: true
   }
@@ -8653,8 +8784,11 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary: string | null
     projectId: string
+    userId: string
     status: $Enums.MeetingStatus
     _count: MeetingCountAggregateOutputType | null
     _min: MeetingMinAggregateOutputType | null
@@ -8680,11 +8814,16 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     name?: boolean
-    meetingUrl?: boolean
+    cloudinaryUrl?: boolean
+    cloudinaryPublicId?: boolean
+    summary?: boolean
     projectId?: boolean
+    userId?: boolean
     status?: boolean
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
     issues?: boolean | Meeting$issuesArgs<ExtArgs>
+    questions?: boolean | Meeting$questionsArgs<ExtArgs>
     _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["meeting"]>
 
@@ -8693,10 +8832,14 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     name?: boolean
-    meetingUrl?: boolean
+    cloudinaryUrl?: boolean
+    cloudinaryPublicId?: boolean
+    summary?: boolean
     projectId?: boolean
+    userId?: boolean
     status?: boolean
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["meeting"]>
 
   export type MeetingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8704,10 +8847,14 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     name?: boolean
-    meetingUrl?: boolean
+    cloudinaryUrl?: boolean
+    cloudinaryPublicId?: boolean
+    summary?: boolean
     projectId?: boolean
+    userId?: boolean
     status?: boolean
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["meeting"]>
 
   export type MeetingSelectScalar = {
@@ -8715,37 +8862,49 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     name?: boolean
-    meetingUrl?: boolean
+    cloudinaryUrl?: boolean
+    cloudinaryPublicId?: boolean
+    summary?: boolean
     projectId?: boolean
+    userId?: boolean
     status?: boolean
   }
 
-  export type MeetingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "name" | "meetingUrl" | "projectId" | "status", ExtArgs["result"]["meeting"]>
+  export type MeetingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "name" | "cloudinaryUrl" | "cloudinaryPublicId" | "summary" | "projectId" | "userId" | "status", ExtArgs["result"]["meeting"]>
   export type MeetingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
     issues?: boolean | Meeting$issuesArgs<ExtArgs>
+    questions?: boolean | Meeting$questionsArgs<ExtArgs>
     _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MeetingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type MeetingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Project?: boolean | ProjectDefaultArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $MeetingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Meeting"
     objects: {
       Project: Prisma.$ProjectPayload<ExtArgs>
+      User: Prisma.$UserPayload<ExtArgs>
       issues: Prisma.$IssuePayload<ExtArgs>[]
+      questions: Prisma.$QuestionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       createdAt: Date
       updatedAt: Date
       name: string
-      meetingUrl: string
+      cloudinaryUrl: string
+      cloudinaryPublicId: string
+      summary: string | null
       projectId: string
+      userId: string
       status: $Enums.MeetingStatus
     }, ExtArgs["result"]["meeting"]>
     composites: {}
@@ -9142,7 +9301,9 @@ export namespace Prisma {
   export interface Prisma__MeetingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     Project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     issues<T extends Meeting$issuesArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$issuesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IssuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    questions<T extends Meeting$questionsArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9176,8 +9337,11 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Meeting", 'DateTime'>
     readonly updatedAt: FieldRef<"Meeting", 'DateTime'>
     readonly name: FieldRef<"Meeting", 'String'>
-    readonly meetingUrl: FieldRef<"Meeting", 'String'>
+    readonly cloudinaryUrl: FieldRef<"Meeting", 'String'>
+    readonly cloudinaryPublicId: FieldRef<"Meeting", 'String'>
+    readonly summary: FieldRef<"Meeting", 'String'>
     readonly projectId: FieldRef<"Meeting", 'String'>
+    readonly userId: FieldRef<"Meeting", 'String'>
     readonly status: FieldRef<"Meeting", 'MeetingStatus'>
   }
     
@@ -9599,6 +9763,30 @@ export namespace Prisma {
   }
 
   /**
+   * Meeting.questions
+   */
+  export type Meeting$questionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Question
+     */
+    select?: QuestionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Question
+     */
+    omit?: QuestionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestionInclude<ExtArgs> | null
+    where?: QuestionWhereInput
+    orderBy?: QuestionOrderByWithRelationInput | QuestionOrderByWithRelationInput[]
+    cursor?: QuestionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: QuestionScalarFieldEnum | QuestionScalarFieldEnum[]
+  }
+
+  /**
    * Meeting without action
    */
   export type MeetingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9631,11 +9819,10 @@ export namespace Prisma {
     id: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    start: string | null
-    end: string | null
-    gist: string | null
-    headline: string | null
-    Summary: string | null
+    title: string | null
+    description: string | null
+    status: string | null
+    priority: string | null
     meetingId: string | null
   }
 
@@ -9643,11 +9830,10 @@ export namespace Prisma {
     id: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    start: string | null
-    end: string | null
-    gist: string | null
-    headline: string | null
-    Summary: string | null
+    title: string | null
+    description: string | null
+    status: string | null
+    priority: string | null
     meetingId: string | null
   }
 
@@ -9655,11 +9841,10 @@ export namespace Prisma {
     id: number
     createdAt: number
     updatedAt: number
-    start: number
-    end: number
-    gist: number
-    headline: number
-    Summary: number
+    title: number
+    description: number
+    status: number
+    priority: number
     meetingId: number
     _all: number
   }
@@ -9669,11 +9854,10 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
-    start?: true
-    end?: true
-    gist?: true
-    headline?: true
-    Summary?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
     meetingId?: true
   }
 
@@ -9681,11 +9865,10 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
-    start?: true
-    end?: true
-    gist?: true
-    headline?: true
-    Summary?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
     meetingId?: true
   }
 
@@ -9693,11 +9876,10 @@ export namespace Prisma {
     id?: true
     createdAt?: true
     updatedAt?: true
-    start?: true
-    end?: true
-    gist?: true
-    headline?: true
-    Summary?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
     meetingId?: true
     _all?: true
   }
@@ -9778,11 +9960,10 @@ export namespace Prisma {
     id: string
     createdAt: Date
     updatedAt: Date
-    start: string
-    end: string
-    gist: string
-    headline: string
-    Summary: string
+    title: string
+    description: string
+    status: string
+    priority: string
     meetingId: string
     _count: IssueCountAggregateOutputType | null
     _min: IssueMinAggregateOutputType | null
@@ -9807,78 +9988,73 @@ export namespace Prisma {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    start?: boolean
-    end?: boolean
-    gist?: boolean
-    headline?: boolean
-    Summary?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
     meetingId?: boolean
-    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    Meeting?: boolean | MeetingDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["issue"]>
 
   export type IssueSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    start?: boolean
-    end?: boolean
-    gist?: boolean
-    headline?: boolean
-    Summary?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
     meetingId?: boolean
-    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    Meeting?: boolean | MeetingDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["issue"]>
 
   export type IssueSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    start?: boolean
-    end?: boolean
-    gist?: boolean
-    headline?: boolean
-    Summary?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
     meetingId?: boolean
-    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    Meeting?: boolean | MeetingDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["issue"]>
 
   export type IssueSelectScalar = {
     id?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    start?: boolean
-    end?: boolean
-    gist?: boolean
-    headline?: boolean
-    Summary?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
     meetingId?: boolean
   }
 
-  export type IssueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "start" | "end" | "gist" | "headline" | "Summary" | "meetingId", ExtArgs["result"]["issue"]>
+  export type IssueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "title" | "description" | "status" | "priority" | "meetingId", ExtArgs["result"]["issue"]>
   export type IssueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    Meeting?: boolean | MeetingDefaultArgs<ExtArgs>
   }
   export type IssueIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    Meeting?: boolean | MeetingDefaultArgs<ExtArgs>
   }
   export type IssueIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    Meeting?: boolean | MeetingDefaultArgs<ExtArgs>
   }
 
   export type $IssuePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Issue"
     objects: {
-      meeting: Prisma.$MeetingPayload<ExtArgs>
+      Meeting: Prisma.$MeetingPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       createdAt: Date
       updatedAt: Date
-      start: string
-      end: string
-      gist: string
-      headline: string
-      Summary: string
+      title: string
+      description: string
+      status: string
+      priority: string
       meetingId: string
     }, ExtArgs["result"]["issue"]>
     composites: {}
@@ -10274,7 +10450,7 @@ export namespace Prisma {
    */
   export interface Prisma__IssueClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    meeting<T extends MeetingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MeetingDefaultArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Meeting<T extends MeetingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MeetingDefaultArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10307,11 +10483,10 @@ export namespace Prisma {
     readonly id: FieldRef<"Issue", 'String'>
     readonly createdAt: FieldRef<"Issue", 'DateTime'>
     readonly updatedAt: FieldRef<"Issue", 'DateTime'>
-    readonly start: FieldRef<"Issue", 'String'>
-    readonly end: FieldRef<"Issue", 'String'>
-    readonly gist: FieldRef<"Issue", 'String'>
-    readonly headline: FieldRef<"Issue", 'String'>
-    readonly Summary: FieldRef<"Issue", 'String'>
+    readonly title: FieldRef<"Issue", 'String'>
+    readonly description: FieldRef<"Issue", 'String'>
+    readonly status: FieldRef<"Issue", 'String'>
+    readonly priority: FieldRef<"Issue", 'String'>
     readonly meetingId: FieldRef<"Issue", 'String'>
   }
     
@@ -11856,7 +12031,8 @@ export namespace Prisma {
     name: 'name',
     githubUrl: 'githubUrl',
     githubToken: 'githubToken',
-    deletedAt: 'deletedAt'
+    deletedAt: 'deletedAt',
+    status: 'status'
   };
 
   export type ProjectScalarFieldEnum = (typeof ProjectScalarFieldEnum)[keyof typeof ProjectScalarFieldEnum]
@@ -11870,7 +12046,8 @@ export namespace Prisma {
     answer: 'answer',
     fileReferences: 'fileReferences',
     projectId: 'projectId',
-    userId: 'userId'
+    userId: 'userId',
+    meetingId: 'meetingId'
   };
 
   export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
@@ -11917,8 +12094,11 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     name: 'name',
-    meetingUrl: 'meetingUrl',
+    cloudinaryUrl: 'cloudinaryUrl',
+    cloudinaryPublicId: 'cloudinaryPublicId',
+    summary: 'summary',
     projectId: 'projectId',
+    userId: 'userId',
     status: 'status'
   };
 
@@ -11929,11 +12109,10 @@ export namespace Prisma {
     id: 'id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    start: 'start',
-    end: 'end',
-    gist: 'gist',
-    headline: 'headline',
-    Summary: 'Summary',
+    title: 'title',
+    description: 'description',
+    status: 'status',
+    priority: 'priority',
     meetingId: 'meetingId'
   };
 
@@ -12022,6 +12201,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProjectStatus'
+   */
+  export type EnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ProjectStatus[]'
+   */
+  export type ListEnumProjectStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectStatus[]'>
     
 
 
@@ -12175,6 +12368,7 @@ export namespace Prisma {
     githubUrl?: StringFilter<"Project"> | string
     githubToken?: StringNullableFilter<"Project"> | string | null
     deletedAt?: DateTimeNullableFilter<"Project"> | Date | string | null
+    status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     Commit?: CommitListRelationFilter
     SavedQuestion?: QuestionListRelationFilter
     SourceCodeEmbedding?: SourceCodeEmbeddingListRelationFilter
@@ -12190,6 +12384,7 @@ export namespace Prisma {
     githubUrl?: SortOrder
     githubToken?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
     Commit?: CommitOrderByRelationAggregateInput
     SavedQuestion?: QuestionOrderByRelationAggregateInput
     SourceCodeEmbedding?: SourceCodeEmbeddingOrderByRelationAggregateInput
@@ -12208,6 +12403,7 @@ export namespace Prisma {
     githubUrl?: StringFilter<"Project"> | string
     githubToken?: StringNullableFilter<"Project"> | string | null
     deletedAt?: DateTimeNullableFilter<"Project"> | Date | string | null
+    status?: EnumProjectStatusFilter<"Project"> | $Enums.ProjectStatus
     Commit?: CommitListRelationFilter
     SavedQuestion?: QuestionListRelationFilter
     SourceCodeEmbedding?: SourceCodeEmbeddingListRelationFilter
@@ -12223,6 +12419,7 @@ export namespace Prisma {
     githubUrl?: SortOrder
     githubToken?: SortOrderInput | SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    status?: SortOrder
     _count?: ProjectCountOrderByAggregateInput
     _max?: ProjectMaxOrderByAggregateInput
     _min?: ProjectMinOrderByAggregateInput
@@ -12239,6 +12436,7 @@ export namespace Prisma {
     githubUrl?: StringWithAggregatesFilter<"Project"> | string
     githubToken?: StringNullableWithAggregatesFilter<"Project"> | string | null
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Project"> | Date | string | null
+    status?: EnumProjectStatusWithAggregatesFilter<"Project"> | $Enums.ProjectStatus
   }
 
   export type QuestionWhereInput = {
@@ -12253,8 +12451,10 @@ export namespace Prisma {
     fileReferences?: JsonNullableFilter<"Question">
     projectId?: StringFilter<"Question"> | string
     userId?: StringFilter<"Question"> | string
+    meetingId?: StringNullableFilter<"Question"> | string | null
     Project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
+    Meeting?: XOR<MeetingNullableScalarRelationFilter, MeetingWhereInput> | null
   }
 
   export type QuestionOrderByWithRelationInput = {
@@ -12266,8 +12466,10 @@ export namespace Prisma {
     fileReferences?: SortOrderInput | SortOrder
     projectId?: SortOrder
     userId?: SortOrder
+    meetingId?: SortOrderInput | SortOrder
     Project?: ProjectOrderByWithRelationInput
     User?: UserOrderByWithRelationInput
+    Meeting?: MeetingOrderByWithRelationInput
   }
 
   export type QuestionWhereUniqueInput = Prisma.AtLeast<{
@@ -12282,8 +12484,10 @@ export namespace Prisma {
     fileReferences?: JsonNullableFilter<"Question">
     projectId?: StringFilter<"Question"> | string
     userId?: StringFilter<"Question"> | string
+    meetingId?: StringNullableFilter<"Question"> | string | null
     Project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
+    Meeting?: XOR<MeetingNullableScalarRelationFilter, MeetingWhereInput> | null
   }, "id">
 
   export type QuestionOrderByWithAggregationInput = {
@@ -12295,6 +12499,7 @@ export namespace Prisma {
     fileReferences?: SortOrderInput | SortOrder
     projectId?: SortOrder
     userId?: SortOrder
+    meetingId?: SortOrderInput | SortOrder
     _count?: QuestionCountOrderByAggregateInput
     _max?: QuestionMaxOrderByAggregateInput
     _min?: QuestionMinOrderByAggregateInput
@@ -12312,6 +12517,7 @@ export namespace Prisma {
     fileReferences?: JsonNullableWithAggregatesFilter<"Question">
     projectId?: StringWithAggregatesFilter<"Question"> | string
     userId?: StringWithAggregatesFilter<"Question"> | string
+    meetingId?: StringNullableWithAggregatesFilter<"Question"> | string | null
   }
 
   export type SourceCodeEmbeddingWhereInput = {
@@ -12384,6 +12590,7 @@ export namespace Prisma {
     QuestionAsked?: QuestionListRelationFilter
     UserToProject?: UserToProjectListRelationFilter
     StripeTransactions?: StripeTransactionListRelationFilter
+    meetings?: MeetingListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -12398,6 +12605,7 @@ export namespace Prisma {
     QuestionAsked?: QuestionOrderByRelationAggregateInput
     UserToProject?: UserToProjectOrderByRelationAggregateInput
     StripeTransactions?: StripeTransactionOrderByRelationAggregateInput
+    meetings?: MeetingOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -12415,6 +12623,7 @@ export namespace Prisma {
     QuestionAsked?: QuestionListRelationFilter
     UserToProject?: UserToProjectListRelationFilter
     StripeTransactions?: StripeTransactionListRelationFilter
+    meetings?: MeetingListRelationFilter
   }, "id" | "emailAddress">
 
   export type UserOrderByWithAggregationInput = {
@@ -12514,11 +12723,16 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     name?: StringFilter<"Meeting"> | string
-    meetingUrl?: StringFilter<"Meeting"> | string
+    cloudinaryUrl?: StringFilter<"Meeting"> | string
+    cloudinaryPublicId?: StringFilter<"Meeting"> | string
+    summary?: StringNullableFilter<"Meeting"> | string | null
     projectId?: StringFilter<"Meeting"> | string
+    userId?: StringFilter<"Meeting"> | string
     status?: EnumMeetingStatusFilter<"Meeting"> | $Enums.MeetingStatus
     Project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
     issues?: IssueListRelationFilter
+    questions?: QuestionListRelationFilter
   }
 
   export type MeetingOrderByWithRelationInput = {
@@ -12526,11 +12740,16 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     name?: SortOrder
-    meetingUrl?: SortOrder
+    cloudinaryUrl?: SortOrder
+    cloudinaryPublicId?: SortOrder
+    summary?: SortOrderInput | SortOrder
     projectId?: SortOrder
+    userId?: SortOrder
     status?: SortOrder
     Project?: ProjectOrderByWithRelationInput
+    User?: UserOrderByWithRelationInput
     issues?: IssueOrderByRelationAggregateInput
+    questions?: QuestionOrderByRelationAggregateInput
   }
 
   export type MeetingWhereUniqueInput = Prisma.AtLeast<{
@@ -12541,11 +12760,16 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     name?: StringFilter<"Meeting"> | string
-    meetingUrl?: StringFilter<"Meeting"> | string
+    cloudinaryUrl?: StringFilter<"Meeting"> | string
+    cloudinaryPublicId?: StringFilter<"Meeting"> | string
+    summary?: StringNullableFilter<"Meeting"> | string | null
     projectId?: StringFilter<"Meeting"> | string
+    userId?: StringFilter<"Meeting"> | string
     status?: EnumMeetingStatusFilter<"Meeting"> | $Enums.MeetingStatus
     Project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    User?: XOR<UserScalarRelationFilter, UserWhereInput>
     issues?: IssueListRelationFilter
+    questions?: QuestionListRelationFilter
   }, "id">
 
   export type MeetingOrderByWithAggregationInput = {
@@ -12553,8 +12777,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     name?: SortOrder
-    meetingUrl?: SortOrder
+    cloudinaryUrl?: SortOrder
+    cloudinaryPublicId?: SortOrder
+    summary?: SortOrderInput | SortOrder
     projectId?: SortOrder
+    userId?: SortOrder
     status?: SortOrder
     _count?: MeetingCountOrderByAggregateInput
     _max?: MeetingMaxOrderByAggregateInput
@@ -12569,8 +12796,11 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
     name?: StringWithAggregatesFilter<"Meeting"> | string
-    meetingUrl?: StringWithAggregatesFilter<"Meeting"> | string
+    cloudinaryUrl?: StringWithAggregatesFilter<"Meeting"> | string
+    cloudinaryPublicId?: StringWithAggregatesFilter<"Meeting"> | string
+    summary?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
     projectId?: StringWithAggregatesFilter<"Meeting"> | string
+    userId?: StringWithAggregatesFilter<"Meeting"> | string
     status?: EnumMeetingStatusWithAggregatesFilter<"Meeting"> | $Enums.MeetingStatus
   }
 
@@ -12581,26 +12811,24 @@ export namespace Prisma {
     id?: StringFilter<"Issue"> | string
     createdAt?: DateTimeFilter<"Issue"> | Date | string
     updatedAt?: DateTimeFilter<"Issue"> | Date | string
-    start?: StringFilter<"Issue"> | string
-    end?: StringFilter<"Issue"> | string
-    gist?: StringFilter<"Issue"> | string
-    headline?: StringFilter<"Issue"> | string
-    Summary?: StringFilter<"Issue"> | string
+    title?: StringFilter<"Issue"> | string
+    description?: StringFilter<"Issue"> | string
+    status?: StringFilter<"Issue"> | string
+    priority?: StringFilter<"Issue"> | string
     meetingId?: StringFilter<"Issue"> | string
-    meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
+    Meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
   }
 
   export type IssueOrderByWithRelationInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    start?: SortOrder
-    end?: SortOrder
-    gist?: SortOrder
-    headline?: SortOrder
-    Summary?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
     meetingId?: SortOrder
-    meeting?: MeetingOrderByWithRelationInput
+    Meeting?: MeetingOrderByWithRelationInput
   }
 
   export type IssueWhereUniqueInput = Prisma.AtLeast<{
@@ -12610,24 +12838,22 @@ export namespace Prisma {
     NOT?: IssueWhereInput | IssueWhereInput[]
     createdAt?: DateTimeFilter<"Issue"> | Date | string
     updatedAt?: DateTimeFilter<"Issue"> | Date | string
-    start?: StringFilter<"Issue"> | string
-    end?: StringFilter<"Issue"> | string
-    gist?: StringFilter<"Issue"> | string
-    headline?: StringFilter<"Issue"> | string
-    Summary?: StringFilter<"Issue"> | string
+    title?: StringFilter<"Issue"> | string
+    description?: StringFilter<"Issue"> | string
+    status?: StringFilter<"Issue"> | string
+    priority?: StringFilter<"Issue"> | string
     meetingId?: StringFilter<"Issue"> | string
-    meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
+    Meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
   }, "id">
 
   export type IssueOrderByWithAggregationInput = {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    start?: SortOrder
-    end?: SortOrder
-    gist?: SortOrder
-    headline?: SortOrder
-    Summary?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
     meetingId?: SortOrder
     _count?: IssueCountOrderByAggregateInput
     _max?: IssueMaxOrderByAggregateInput
@@ -12641,11 +12867,10 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Issue"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Issue"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Issue"> | Date | string
-    start?: StringWithAggregatesFilter<"Issue"> | string
-    end?: StringWithAggregatesFilter<"Issue"> | string
-    gist?: StringWithAggregatesFilter<"Issue"> | string
-    headline?: StringWithAggregatesFilter<"Issue"> | string
-    Summary?: StringWithAggregatesFilter<"Issue"> | string
+    title?: StringWithAggregatesFilter<"Issue"> | string
+    description?: StringWithAggregatesFilter<"Issue"> | string
+    status?: StringWithAggregatesFilter<"Issue"> | string
+    priority?: StringWithAggregatesFilter<"Issue"> | string
     meetingId?: StringWithAggregatesFilter<"Issue"> | string
   }
 
@@ -12804,6 +13029,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingCreateNestedManyWithoutProjectInput
@@ -12819,6 +13045,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitUncheckedCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionUncheckedCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedCreateNestedManyWithoutProjectInput
@@ -12834,6 +13061,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUpdateManyWithoutProjectNestedInput
@@ -12849,6 +13077,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUncheckedUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUncheckedUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedUpdateManyWithoutProjectNestedInput
@@ -12864,6 +13093,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
   }
 
   export type ProjectUpdateManyMutationInput = {
@@ -12874,6 +13104,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
   }
 
   export type ProjectUncheckedUpdateManyInput = {
@@ -12884,6 +13115,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
   }
 
   export type QuestionCreateInput = {
@@ -12895,6 +13127,7 @@ export namespace Prisma {
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     Project: ProjectCreateNestedOneWithoutSavedQuestionInput
     User: UserCreateNestedOneWithoutQuestionAskedInput
+    Meeting?: MeetingCreateNestedOneWithoutQuestionsInput
   }
 
   export type QuestionUncheckedCreateInput = {
@@ -12906,6 +13139,7 @@ export namespace Prisma {
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId: string
     userId: string
+    meetingId?: string | null
   }
 
   export type QuestionUpdateInput = {
@@ -12917,6 +13151,7 @@ export namespace Prisma {
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     Project?: ProjectUpdateOneRequiredWithoutSavedQuestionNestedInput
     User?: UserUpdateOneRequiredWithoutQuestionAskedNestedInput
+    Meeting?: MeetingUpdateOneWithoutQuestionsNestedInput
   }
 
   export type QuestionUncheckedUpdateInput = {
@@ -12928,6 +13163,7 @@ export namespace Prisma {
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuestionCreateManyInput = {
@@ -12939,6 +13175,7 @@ export namespace Prisma {
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId: string
     userId: string
+    meetingId?: string | null
   }
 
   export type QuestionUpdateManyMutationInput = {
@@ -12959,6 +13196,7 @@ export namespace Prisma {
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SourceCodeEmbeddingCreateInput = {
@@ -13028,6 +13266,7 @@ export namespace Prisma {
     QuestionAsked?: QuestionCreateNestedManyWithoutUserInput
     UserToProject?: UserToProjectCreateNestedManyWithoutUserInput
     StripeTransactions?: StripeTransactionCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -13042,6 +13281,7 @@ export namespace Prisma {
     QuestionAsked?: QuestionUncheckedCreateNestedManyWithoutUserInput
     UserToProject?: UserToProjectUncheckedCreateNestedManyWithoutUserInput
     StripeTransactions?: StripeTransactionUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -13056,6 +13296,7 @@ export namespace Prisma {
     QuestionAsked?: QuestionUpdateManyWithoutUserNestedInput
     UserToProject?: UserToProjectUpdateManyWithoutUserNestedInput
     StripeTransactions?: StripeTransactionUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -13070,6 +13311,7 @@ export namespace Prisma {
     QuestionAsked?: QuestionUncheckedUpdateManyWithoutUserNestedInput
     UserToProject?: UserToProjectUncheckedUpdateManyWithoutUserNestedInput
     StripeTransactions?: StripeTransactionUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -13164,10 +13406,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
     status?: $Enums.MeetingStatus
     Project: ProjectCreateNestedOneWithoutMeetingsInput
+    User: UserCreateNestedOneWithoutMeetingsInput
     issues?: IssueCreateNestedManyWithoutMeetingInput
+    questions?: QuestionCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateInput = {
@@ -13175,10 +13421,14 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
     projectId: string
+    userId: string
     status?: $Enums.MeetingStatus
     issues?: IssueUncheckedCreateNestedManyWithoutMeetingInput
+    questions?: QuestionUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUpdateInput = {
@@ -13186,10 +13436,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
     Project?: ProjectUpdateOneRequiredWithoutMeetingsNestedInput
+    User?: UserUpdateOneRequiredWithoutMeetingsNestedInput
     issues?: IssueUpdateManyWithoutMeetingNestedInput
+    questions?: QuestionUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateInput = {
@@ -13197,10 +13451,14 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
     issues?: IssueUncheckedUpdateManyWithoutMeetingNestedInput
+    questions?: QuestionUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingCreateManyInput = {
@@ -13208,8 +13466,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
     projectId: string
+    userId: string
     status?: $Enums.MeetingStatus
   }
 
@@ -13218,7 +13479,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
   }
 
@@ -13227,8 +13490,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
   }
 
@@ -13236,23 +13502,21 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    start: string
-    end: string
-    gist: string
-    headline: string
-    Summary: string
-    meeting: MeetingCreateNestedOneWithoutIssuesInput
+    title: string
+    description: string
+    status: string
+    priority: string
+    Meeting: MeetingCreateNestedOneWithoutIssuesInput
   }
 
   export type IssueUncheckedCreateInput = {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    start: string
-    end: string
-    gist: string
-    headline: string
-    Summary: string
+    title: string
+    description: string
+    status: string
+    priority: string
     meetingId: string
   }
 
@@ -13260,23 +13524,21 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    start?: StringFieldUpdateOperationsInput | string
-    end?: StringFieldUpdateOperationsInput | string
-    gist?: StringFieldUpdateOperationsInput | string
-    headline?: StringFieldUpdateOperationsInput | string
-    Summary?: StringFieldUpdateOperationsInput | string
-    meeting?: MeetingUpdateOneRequiredWithoutIssuesNestedInput
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    Meeting?: MeetingUpdateOneRequiredWithoutIssuesNestedInput
   }
 
   export type IssueUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    start?: StringFieldUpdateOperationsInput | string
-    end?: StringFieldUpdateOperationsInput | string
-    gist?: StringFieldUpdateOperationsInput | string
-    headline?: StringFieldUpdateOperationsInput | string
-    Summary?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
     meetingId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -13284,11 +13546,10 @@ export namespace Prisma {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    start: string
-    end: string
-    gist: string
-    headline: string
-    Summary: string
+    title: string
+    description: string
+    status: string
+    priority: string
     meetingId: string
   }
 
@@ -13296,22 +13557,20 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    start?: StringFieldUpdateOperationsInput | string
-    end?: StringFieldUpdateOperationsInput | string
-    gist?: StringFieldUpdateOperationsInput | string
-    headline?: StringFieldUpdateOperationsInput | string
-    Summary?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
   }
 
   export type IssueUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    start?: StringFieldUpdateOperationsInput | string
-    end?: StringFieldUpdateOperationsInput | string
-    gist?: StringFieldUpdateOperationsInput | string
-    headline?: StringFieldUpdateOperationsInput | string
-    Summary?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
     meetingId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -13498,6 +13757,13 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type EnumProjectStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectStatus | EnumProjectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectStatusFilter<$PrismaModel> | $Enums.ProjectStatus
+  }
+
   export type CommitListRelationFilter = {
     every?: CommitWhereInput
     some?: CommitWhereInput
@@ -13561,6 +13827,7 @@ export namespace Prisma {
     githubUrl?: SortOrder
     githubToken?: SortOrder
     deletedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type ProjectMaxOrderByAggregateInput = {
@@ -13571,6 +13838,7 @@ export namespace Prisma {
     githubUrl?: SortOrder
     githubToken?: SortOrder
     deletedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type ProjectMinOrderByAggregateInput = {
@@ -13581,6 +13849,7 @@ export namespace Prisma {
     githubUrl?: SortOrder
     githubToken?: SortOrder
     deletedAt?: SortOrder
+    status?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13614,6 +13883,16 @@ export namespace Prisma {
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
+
+  export type EnumProjectStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectStatus | EnumProjectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProjectStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProjectStatusFilter<$PrismaModel>
+    _max?: NestedEnumProjectStatusFilter<$PrismaModel>
+  }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -13643,6 +13922,11 @@ export namespace Prisma {
     isNot?: UserWhereInput
   }
 
+  export type MeetingNullableScalarRelationFilter = {
+    is?: MeetingWhereInput | null
+    isNot?: MeetingWhereInput | null
+  }
+
   export type QuestionCountOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
@@ -13652,6 +13936,7 @@ export namespace Prisma {
     fileReferences?: SortOrder
     projectId?: SortOrder
     userId?: SortOrder
+    meetingId?: SortOrder
   }
 
   export type QuestionMaxOrderByAggregateInput = {
@@ -13662,6 +13947,7 @@ export namespace Prisma {
     answer?: SortOrder
     projectId?: SortOrder
     userId?: SortOrder
+    meetingId?: SortOrder
   }
 
   export type QuestionMinOrderByAggregateInput = {
@@ -13672,6 +13958,7 @@ export namespace Prisma {
     answer?: SortOrder
     projectId?: SortOrder
     userId?: SortOrder
+    meetingId?: SortOrder
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -13853,8 +14140,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     name?: SortOrder
-    meetingUrl?: SortOrder
+    cloudinaryUrl?: SortOrder
+    cloudinaryPublicId?: SortOrder
+    summary?: SortOrder
     projectId?: SortOrder
+    userId?: SortOrder
     status?: SortOrder
   }
 
@@ -13863,8 +14153,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     name?: SortOrder
-    meetingUrl?: SortOrder
+    cloudinaryUrl?: SortOrder
+    cloudinaryPublicId?: SortOrder
+    summary?: SortOrder
     projectId?: SortOrder
+    userId?: SortOrder
     status?: SortOrder
   }
 
@@ -13873,8 +14166,11 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     name?: SortOrder
-    meetingUrl?: SortOrder
+    cloudinaryUrl?: SortOrder
+    cloudinaryPublicId?: SortOrder
+    summary?: SortOrder
     projectId?: SortOrder
+    userId?: SortOrder
     status?: SortOrder
   }
 
@@ -13897,11 +14193,10 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    start?: SortOrder
-    end?: SortOrder
-    gist?: SortOrder
-    headline?: SortOrder
-    Summary?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
     meetingId?: SortOrder
   }
 
@@ -13909,11 +14204,10 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    start?: SortOrder
-    end?: SortOrder
-    gist?: SortOrder
-    headline?: SortOrder
-    Summary?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
     meetingId?: SortOrder
   }
 
@@ -13921,11 +14215,10 @@ export namespace Prisma {
     id?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    start?: SortOrder
-    end?: SortOrder
-    gist?: SortOrder
-    headline?: SortOrder
-    Summary?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
     meetingId?: SortOrder
   }
 
@@ -14059,6 +14352,10 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type EnumProjectStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ProjectStatus
   }
 
   export type CommitUpdateManyWithoutProjectNestedInput = {
@@ -14213,6 +14510,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type MeetingCreateNestedOneWithoutQuestionsInput = {
+    create?: XOR<MeetingCreateWithoutQuestionsInput, MeetingUncheckedCreateWithoutQuestionsInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutQuestionsInput
+    connect?: MeetingWhereUniqueInput
+  }
+
   export type ProjectUpdateOneRequiredWithoutSavedQuestionNestedInput = {
     create?: XOR<ProjectCreateWithoutSavedQuestionInput, ProjectUncheckedCreateWithoutSavedQuestionInput>
     connectOrCreate?: ProjectCreateOrConnectWithoutSavedQuestionInput
@@ -14227,6 +14530,16 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutQuestionAskedInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuestionAskedInput, UserUpdateWithoutQuestionAskedInput>, UserUncheckedUpdateWithoutQuestionAskedInput>
+  }
+
+  export type MeetingUpdateOneWithoutQuestionsNestedInput = {
+    create?: XOR<MeetingCreateWithoutQuestionsInput, MeetingUncheckedCreateWithoutQuestionsInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutQuestionsInput
+    upsert?: MeetingUpsertWithoutQuestionsInput
+    disconnect?: MeetingWhereInput | boolean
+    delete?: MeetingWhereInput | boolean
+    connect?: MeetingWhereUniqueInput
+    update?: XOR<XOR<MeetingUpdateToOneWithWhereWithoutQuestionsInput, MeetingUpdateWithoutQuestionsInput>, MeetingUncheckedUpdateWithoutQuestionsInput>
   }
 
   export type ProjectCreateNestedOneWithoutSourceCodeEmbeddingInput = {
@@ -14264,6 +14577,13 @@ export namespace Prisma {
     connect?: StripeTransactionWhereUniqueInput | StripeTransactionWhereUniqueInput[]
   }
 
+  export type MeetingCreateNestedManyWithoutUserInput = {
+    create?: XOR<MeetingCreateWithoutUserInput, MeetingUncheckedCreateWithoutUserInput> | MeetingCreateWithoutUserInput[] | MeetingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutUserInput | MeetingCreateOrConnectWithoutUserInput[]
+    createMany?: MeetingCreateManyUserInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
   export type QuestionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<QuestionCreateWithoutUserInput, QuestionUncheckedCreateWithoutUserInput> | QuestionCreateWithoutUserInput[] | QuestionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: QuestionCreateOrConnectWithoutUserInput | QuestionCreateOrConnectWithoutUserInput[]
@@ -14283,6 +14603,13 @@ export namespace Prisma {
     connectOrCreate?: StripeTransactionCreateOrConnectWithoutUserInput | StripeTransactionCreateOrConnectWithoutUserInput[]
     createMany?: StripeTransactionCreateManyUserInputEnvelope
     connect?: StripeTransactionWhereUniqueInput | StripeTransactionWhereUniqueInput[]
+  }
+
+  export type MeetingUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MeetingCreateWithoutUserInput, MeetingUncheckedCreateWithoutUserInput> | MeetingCreateWithoutUserInput[] | MeetingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutUserInput | MeetingCreateOrConnectWithoutUserInput[]
+    createMany?: MeetingCreateManyUserInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -14335,6 +14662,20 @@ export namespace Prisma {
     deleteMany?: StripeTransactionScalarWhereInput | StripeTransactionScalarWhereInput[]
   }
 
+  export type MeetingUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MeetingCreateWithoutUserInput, MeetingUncheckedCreateWithoutUserInput> | MeetingCreateWithoutUserInput[] | MeetingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutUserInput | MeetingCreateOrConnectWithoutUserInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutUserInput | MeetingUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MeetingCreateManyUserInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutUserInput | MeetingUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutUserInput | MeetingUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
   export type QuestionUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<QuestionCreateWithoutUserInput, QuestionUncheckedCreateWithoutUserInput> | QuestionCreateWithoutUserInput[] | QuestionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: QuestionCreateOrConnectWithoutUserInput | QuestionCreateOrConnectWithoutUserInput[]
@@ -14377,6 +14718,20 @@ export namespace Prisma {
     deleteMany?: StripeTransactionScalarWhereInput | StripeTransactionScalarWhereInput[]
   }
 
+  export type MeetingUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MeetingCreateWithoutUserInput, MeetingUncheckedCreateWithoutUserInput> | MeetingCreateWithoutUserInput[] | MeetingUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutUserInput | MeetingCreateOrConnectWithoutUserInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutUserInput | MeetingUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MeetingCreateManyUserInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutUserInput | MeetingUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutUserInput | MeetingUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
   export type ProjectCreateNestedOneWithoutUserToProjectInput = {
     create?: XOR<ProjectCreateWithoutUserToProjectInput, ProjectUncheckedCreateWithoutUserToProjectInput>
     connectOrCreate?: ProjectCreateOrConnectWithoutUserToProjectInput
@@ -14411,6 +14766,12 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput
   }
 
+  export type UserCreateNestedOneWithoutMeetingsInput = {
+    create?: XOR<UserCreateWithoutMeetingsInput, UserUncheckedCreateWithoutMeetingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMeetingsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type IssueCreateNestedManyWithoutMeetingInput = {
     create?: XOR<IssueCreateWithoutMeetingInput, IssueUncheckedCreateWithoutMeetingInput> | IssueCreateWithoutMeetingInput[] | IssueUncheckedCreateWithoutMeetingInput[]
     connectOrCreate?: IssueCreateOrConnectWithoutMeetingInput | IssueCreateOrConnectWithoutMeetingInput[]
@@ -14418,11 +14779,25 @@ export namespace Prisma {
     connect?: IssueWhereUniqueInput | IssueWhereUniqueInput[]
   }
 
+  export type QuestionCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<QuestionCreateWithoutMeetingInput, QuestionUncheckedCreateWithoutMeetingInput> | QuestionCreateWithoutMeetingInput[] | QuestionUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: QuestionCreateOrConnectWithoutMeetingInput | QuestionCreateOrConnectWithoutMeetingInput[]
+    createMany?: QuestionCreateManyMeetingInputEnvelope
+    connect?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+  }
+
   export type IssueUncheckedCreateNestedManyWithoutMeetingInput = {
     create?: XOR<IssueCreateWithoutMeetingInput, IssueUncheckedCreateWithoutMeetingInput> | IssueCreateWithoutMeetingInput[] | IssueUncheckedCreateWithoutMeetingInput[]
     connectOrCreate?: IssueCreateOrConnectWithoutMeetingInput | IssueCreateOrConnectWithoutMeetingInput[]
     createMany?: IssueCreateManyMeetingInputEnvelope
     connect?: IssueWhereUniqueInput | IssueWhereUniqueInput[]
+  }
+
+  export type QuestionUncheckedCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<QuestionCreateWithoutMeetingInput, QuestionUncheckedCreateWithoutMeetingInput> | QuestionCreateWithoutMeetingInput[] | QuestionUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: QuestionCreateOrConnectWithoutMeetingInput | QuestionCreateOrConnectWithoutMeetingInput[]
+    createMany?: QuestionCreateManyMeetingInputEnvelope
+    connect?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
   }
 
   export type EnumMeetingStatusFieldUpdateOperationsInput = {
@@ -14435,6 +14810,14 @@ export namespace Prisma {
     upsert?: ProjectUpsertWithoutMeetingsInput
     connect?: ProjectWhereUniqueInput
     update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutMeetingsInput, ProjectUpdateWithoutMeetingsInput>, ProjectUncheckedUpdateWithoutMeetingsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMeetingsNestedInput = {
+    create?: XOR<UserCreateWithoutMeetingsInput, UserUncheckedCreateWithoutMeetingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMeetingsInput
+    upsert?: UserUpsertWithoutMeetingsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMeetingsInput, UserUpdateWithoutMeetingsInput>, UserUncheckedUpdateWithoutMeetingsInput>
   }
 
   export type IssueUpdateManyWithoutMeetingNestedInput = {
@@ -14451,6 +14834,20 @@ export namespace Prisma {
     deleteMany?: IssueScalarWhereInput | IssueScalarWhereInput[]
   }
 
+  export type QuestionUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<QuestionCreateWithoutMeetingInput, QuestionUncheckedCreateWithoutMeetingInput> | QuestionCreateWithoutMeetingInput[] | QuestionUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: QuestionCreateOrConnectWithoutMeetingInput | QuestionCreateOrConnectWithoutMeetingInput[]
+    upsert?: QuestionUpsertWithWhereUniqueWithoutMeetingInput | QuestionUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: QuestionCreateManyMeetingInputEnvelope
+    set?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    disconnect?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    delete?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    connect?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    update?: QuestionUpdateWithWhereUniqueWithoutMeetingInput | QuestionUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: QuestionUpdateManyWithWhereWithoutMeetingInput | QuestionUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: QuestionScalarWhereInput | QuestionScalarWhereInput[]
+  }
+
   export type IssueUncheckedUpdateManyWithoutMeetingNestedInput = {
     create?: XOR<IssueCreateWithoutMeetingInput, IssueUncheckedCreateWithoutMeetingInput> | IssueCreateWithoutMeetingInput[] | IssueUncheckedCreateWithoutMeetingInput[]
     connectOrCreate?: IssueCreateOrConnectWithoutMeetingInput | IssueCreateOrConnectWithoutMeetingInput[]
@@ -14463,6 +14860,20 @@ export namespace Prisma {
     update?: IssueUpdateWithWhereUniqueWithoutMeetingInput | IssueUpdateWithWhereUniqueWithoutMeetingInput[]
     updateMany?: IssueUpdateManyWithWhereWithoutMeetingInput | IssueUpdateManyWithWhereWithoutMeetingInput[]
     deleteMany?: IssueScalarWhereInput | IssueScalarWhereInput[]
+  }
+
+  export type QuestionUncheckedUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<QuestionCreateWithoutMeetingInput, QuestionUncheckedCreateWithoutMeetingInput> | QuestionCreateWithoutMeetingInput[] | QuestionUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: QuestionCreateOrConnectWithoutMeetingInput | QuestionCreateOrConnectWithoutMeetingInput[]
+    upsert?: QuestionUpsertWithWhereUniqueWithoutMeetingInput | QuestionUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: QuestionCreateManyMeetingInputEnvelope
+    set?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    disconnect?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    delete?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    connect?: QuestionWhereUniqueInput | QuestionWhereUniqueInput[]
+    update?: QuestionUpdateWithWhereUniqueWithoutMeetingInput | QuestionUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: QuestionUpdateManyWithWhereWithoutMeetingInput | QuestionUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: QuestionScalarWhereInput | QuestionScalarWhereInput[]
   }
 
   export type MeetingCreateNestedOneWithoutIssuesInput = {
@@ -14585,6 +14996,13 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type NestedEnumProjectStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectStatus | EnumProjectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectStatusFilter<$PrismaModel> | $Enums.ProjectStatus
+  }
+
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -14625,6 +15043,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumProjectStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProjectStatus | EnumProjectStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProjectStatus[] | ListEnumProjectStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProjectStatusWithAggregatesFilter<$PrismaModel> | $Enums.ProjectStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumProjectStatusFilter<$PrismaModel>
+    _max?: NestedEnumProjectStatusFilter<$PrismaModel>
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -14702,6 +15130,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     SavedQuestion?: QuestionCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingCreateNestedManyWithoutProjectInput
     UserToProject?: UserToProjectCreateNestedManyWithoutProjectInput
@@ -14716,6 +15145,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     SavedQuestion?: QuestionUncheckedCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedCreateNestedManyWithoutProjectInput
     UserToProject?: UserToProjectUncheckedCreateNestedManyWithoutProjectInput
@@ -14746,6 +15176,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     SavedQuestion?: QuestionUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUpdateManyWithoutProjectNestedInput
     UserToProject?: UserToProjectUpdateManyWithoutProjectNestedInput
@@ -14760,6 +15191,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     SavedQuestion?: QuestionUncheckedUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedUpdateManyWithoutProjectNestedInput
     UserToProject?: UserToProjectUncheckedUpdateManyWithoutProjectNestedInput
@@ -14808,6 +15240,7 @@ export namespace Prisma {
     answer: string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     User: UserCreateNestedOneWithoutQuestionAskedInput
+    Meeting?: MeetingCreateNestedOneWithoutQuestionsInput
   }
 
   export type QuestionUncheckedCreateWithoutProjectInput = {
@@ -14818,6 +15251,7 @@ export namespace Prisma {
     answer: string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     userId: string
+    meetingId?: string | null
   }
 
   export type QuestionCreateOrConnectWithoutProjectInput = {
@@ -14883,9 +15317,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
     status?: $Enums.MeetingStatus
+    User: UserCreateNestedOneWithoutMeetingsInput
     issues?: IssueCreateNestedManyWithoutMeetingInput
+    questions?: QuestionCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateWithoutProjectInput = {
@@ -14893,9 +15331,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
+    userId: string
     status?: $Enums.MeetingStatus
     issues?: IssueUncheckedCreateNestedManyWithoutMeetingInput
+    questions?: QuestionUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingCreateOrConnectWithoutProjectInput = {
@@ -14968,6 +15410,7 @@ export namespace Prisma {
     fileReferences?: JsonNullableFilter<"Question">
     projectId?: StringFilter<"Question"> | string
     userId?: StringFilter<"Question"> | string
+    meetingId?: StringNullableFilter<"Question"> | string | null
   }
 
   export type SourceCodeEmbeddingUpsertWithWhereUniqueWithoutProjectInput = {
@@ -15048,8 +15491,11 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Meeting"> | Date | string
     updatedAt?: DateTimeFilter<"Meeting"> | Date | string
     name?: StringFilter<"Meeting"> | string
-    meetingUrl?: StringFilter<"Meeting"> | string
+    cloudinaryUrl?: StringFilter<"Meeting"> | string
+    cloudinaryPublicId?: StringFilter<"Meeting"> | string
+    summary?: StringNullableFilter<"Meeting"> | string | null
     projectId?: StringFilter<"Meeting"> | string
+    userId?: StringFilter<"Meeting"> | string
     status?: EnumMeetingStatusFilter<"Meeting"> | $Enums.MeetingStatus
   }
 
@@ -15061,6 +15507,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingCreateNestedManyWithoutProjectInput
     UserToProject?: UserToProjectCreateNestedManyWithoutProjectInput
@@ -15075,6 +15522,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitUncheckedCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedCreateNestedManyWithoutProjectInput
     UserToProject?: UserToProjectUncheckedCreateNestedManyWithoutProjectInput
@@ -15097,6 +15545,7 @@ export namespace Prisma {
     credits?: number
     UserToProject?: UserToProjectCreateNestedManyWithoutUserInput
     StripeTransactions?: StripeTransactionCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutQuestionAskedInput = {
@@ -15110,11 +15559,45 @@ export namespace Prisma {
     credits?: number
     UserToProject?: UserToProjectUncheckedCreateNestedManyWithoutUserInput
     StripeTransactions?: StripeTransactionUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutQuestionAskedInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutQuestionAskedInput, UserUncheckedCreateWithoutQuestionAskedInput>
+  }
+
+  export type MeetingCreateWithoutQuestionsInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    name: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
+    status?: $Enums.MeetingStatus
+    Project: ProjectCreateNestedOneWithoutMeetingsInput
+    User: UserCreateNestedOneWithoutMeetingsInput
+    issues?: IssueCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUncheckedCreateWithoutQuestionsInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    name: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
+    projectId: string
+    userId: string
+    status?: $Enums.MeetingStatus
+    issues?: IssueUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutQuestionsInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutQuestionsInput, MeetingUncheckedCreateWithoutQuestionsInput>
   }
 
   export type ProjectUpsertWithoutSavedQuestionInput = {
@@ -15136,6 +15619,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUpdateManyWithoutProjectNestedInput
     UserToProject?: UserToProjectUpdateManyWithoutProjectNestedInput
@@ -15150,6 +15634,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUncheckedUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedUpdateManyWithoutProjectNestedInput
     UserToProject?: UserToProjectUncheckedUpdateManyWithoutProjectNestedInput
@@ -15178,6 +15663,7 @@ export namespace Prisma {
     credits?: IntFieldUpdateOperationsInput | number
     UserToProject?: UserToProjectUpdateManyWithoutUserNestedInput
     StripeTransactions?: StripeTransactionUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuestionAskedInput = {
@@ -15191,6 +15677,46 @@ export namespace Prisma {
     credits?: IntFieldUpdateOperationsInput | number
     UserToProject?: UserToProjectUncheckedUpdateManyWithoutUserNestedInput
     StripeTransactions?: StripeTransactionUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type MeetingUpsertWithoutQuestionsInput = {
+    update: XOR<MeetingUpdateWithoutQuestionsInput, MeetingUncheckedUpdateWithoutQuestionsInput>
+    create: XOR<MeetingCreateWithoutQuestionsInput, MeetingUncheckedCreateWithoutQuestionsInput>
+    where?: MeetingWhereInput
+  }
+
+  export type MeetingUpdateToOneWithWhereWithoutQuestionsInput = {
+    where?: MeetingWhereInput
+    data: XOR<MeetingUpdateWithoutQuestionsInput, MeetingUncheckedUpdateWithoutQuestionsInput>
+  }
+
+  export type MeetingUpdateWithoutQuestionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    Project?: ProjectUpdateOneRequiredWithoutMeetingsNestedInput
+    User?: UserUpdateOneRequiredWithoutMeetingsNestedInput
+    issues?: IssueUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutQuestionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    issues?: IssueUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type ProjectCreateWithoutSourceCodeEmbeddingInput = {
@@ -15201,6 +15727,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionCreateNestedManyWithoutProjectInput
     UserToProject?: UserToProjectCreateNestedManyWithoutProjectInput
@@ -15215,6 +15742,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitUncheckedCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionUncheckedCreateNestedManyWithoutProjectInput
     UserToProject?: UserToProjectUncheckedCreateNestedManyWithoutProjectInput
@@ -15245,6 +15773,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUpdateManyWithoutProjectNestedInput
     UserToProject?: UserToProjectUpdateManyWithoutProjectNestedInput
@@ -15259,6 +15788,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUncheckedUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUncheckedUpdateManyWithoutProjectNestedInput
     UserToProject?: UserToProjectUncheckedUpdateManyWithoutProjectNestedInput
@@ -15273,6 +15803,7 @@ export namespace Prisma {
     answer: string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     Project: ProjectCreateNestedOneWithoutSavedQuestionInput
+    Meeting?: MeetingCreateNestedOneWithoutQuestionsInput
   }
 
   export type QuestionUncheckedCreateWithoutUserInput = {
@@ -15283,6 +15814,7 @@ export namespace Prisma {
     answer: string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId: string
+    meetingId?: string | null
   }
 
   export type QuestionCreateOrConnectWithoutUserInput = {
@@ -15340,6 +15872,44 @@ export namespace Prisma {
 
   export type StripeTransactionCreateManyUserInputEnvelope = {
     data: StripeTransactionCreateManyUserInput | StripeTransactionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MeetingCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    name: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
+    status?: $Enums.MeetingStatus
+    Project: ProjectCreateNestedOneWithoutMeetingsInput
+    issues?: IssueCreateNestedManyWithoutMeetingInput
+    questions?: QuestionCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUncheckedCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    name: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
+    projectId: string
+    status?: $Enums.MeetingStatus
+    issues?: IssueUncheckedCreateNestedManyWithoutMeetingInput
+    questions?: QuestionUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutUserInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutUserInput, MeetingUncheckedCreateWithoutUserInput>
+  }
+
+  export type MeetingCreateManyUserInputEnvelope = {
+    data: MeetingCreateManyUserInput | MeetingCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -15402,6 +15972,22 @@ export namespace Prisma {
     credits?: IntFilter<"StripeTransaction"> | number
   }
 
+  export type MeetingUpsertWithWhereUniqueWithoutUserInput = {
+    where: MeetingWhereUniqueInput
+    update: XOR<MeetingUpdateWithoutUserInput, MeetingUncheckedUpdateWithoutUserInput>
+    create: XOR<MeetingCreateWithoutUserInput, MeetingUncheckedCreateWithoutUserInput>
+  }
+
+  export type MeetingUpdateWithWhereUniqueWithoutUserInput = {
+    where: MeetingWhereUniqueInput
+    data: XOR<MeetingUpdateWithoutUserInput, MeetingUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MeetingUpdateManyWithWhereWithoutUserInput = {
+    where: MeetingScalarWhereInput
+    data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyWithoutUserInput>
+  }
+
   export type ProjectCreateWithoutUserToProjectInput = {
     id?: string
     createdAt?: Date | string
@@ -15410,6 +15996,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingCreateNestedManyWithoutProjectInput
@@ -15424,6 +16011,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitUncheckedCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionUncheckedCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedCreateNestedManyWithoutProjectInput
@@ -15446,6 +16034,7 @@ export namespace Prisma {
     credits?: number
     QuestionAsked?: QuestionCreateNestedManyWithoutUserInput
     StripeTransactions?: StripeTransactionCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUserToProjectInput = {
@@ -15459,6 +16048,7 @@ export namespace Prisma {
     credits?: number
     QuestionAsked?: QuestionUncheckedCreateNestedManyWithoutUserInput
     StripeTransactions?: StripeTransactionUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUserToProjectInput = {
@@ -15485,6 +16075,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUpdateManyWithoutProjectNestedInput
@@ -15499,6 +16090,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUncheckedUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUncheckedUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedUpdateManyWithoutProjectNestedInput
@@ -15527,6 +16119,7 @@ export namespace Prisma {
     credits?: IntFieldUpdateOperationsInput | number
     QuestionAsked?: QuestionUpdateManyWithoutUserNestedInput
     StripeTransactions?: StripeTransactionUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUserToProjectInput = {
@@ -15540,6 +16133,7 @@ export namespace Prisma {
     credits?: IntFieldUpdateOperationsInput | number
     QuestionAsked?: QuestionUncheckedUpdateManyWithoutUserNestedInput
     StripeTransactions?: StripeTransactionUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutMeetingsInput = {
@@ -15550,6 +16144,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingCreateNestedManyWithoutProjectInput
@@ -15564,6 +16159,7 @@ export namespace Prisma {
     githubUrl: string
     githubToken?: string | null
     deletedAt?: Date | string | null
+    status?: $Enums.ProjectStatus
     Commit?: CommitUncheckedCreateNestedManyWithoutProjectInput
     SavedQuestion?: QuestionUncheckedCreateNestedManyWithoutProjectInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedCreateNestedManyWithoutProjectInput
@@ -15575,26 +16171,57 @@ export namespace Prisma {
     create: XOR<ProjectCreateWithoutMeetingsInput, ProjectUncheckedCreateWithoutMeetingsInput>
   }
 
+  export type UserCreateWithoutMeetingsInput = {
+    id?: string
+    createdAt?: Date | string
+    updateAt?: Date | string
+    imageUrl?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    emailAddress: string
+    credits?: number
+    QuestionAsked?: QuestionCreateNestedManyWithoutUserInput
+    UserToProject?: UserToProjectCreateNestedManyWithoutUserInput
+    StripeTransactions?: StripeTransactionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutMeetingsInput = {
+    id?: string
+    createdAt?: Date | string
+    updateAt?: Date | string
+    imageUrl?: string | null
+    firstName?: string | null
+    lastName?: string | null
+    emailAddress: string
+    credits?: number
+    QuestionAsked?: QuestionUncheckedCreateNestedManyWithoutUserInput
+    UserToProject?: UserToProjectUncheckedCreateNestedManyWithoutUserInput
+    StripeTransactions?: StripeTransactionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutMeetingsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMeetingsInput, UserUncheckedCreateWithoutMeetingsInput>
+  }
+
   export type IssueCreateWithoutMeetingInput = {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    start: string
-    end: string
-    gist: string
-    headline: string
-    Summary: string
+    title: string
+    description: string
+    status: string
+    priority: string
   }
 
   export type IssueUncheckedCreateWithoutMeetingInput = {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    start: string
-    end: string
-    gist: string
-    headline: string
-    Summary: string
+    title: string
+    description: string
+    status: string
+    priority: string
   }
 
   export type IssueCreateOrConnectWithoutMeetingInput = {
@@ -15604,6 +16231,38 @@ export namespace Prisma {
 
   export type IssueCreateManyMeetingInputEnvelope = {
     data: IssueCreateManyMeetingInput | IssueCreateManyMeetingInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type QuestionCreateWithoutMeetingInput = {
+    id?: string
+    createdAt?: Date | string
+    updateAt?: Date | string
+    question: string
+    answer: string
+    fileReferences?: NullableJsonNullValueInput | InputJsonValue
+    Project: ProjectCreateNestedOneWithoutSavedQuestionInput
+    User: UserCreateNestedOneWithoutQuestionAskedInput
+  }
+
+  export type QuestionUncheckedCreateWithoutMeetingInput = {
+    id?: string
+    createdAt?: Date | string
+    updateAt?: Date | string
+    question: string
+    answer: string
+    fileReferences?: NullableJsonNullValueInput | InputJsonValue
+    projectId: string
+    userId: string
+  }
+
+  export type QuestionCreateOrConnectWithoutMeetingInput = {
+    where: QuestionWhereUniqueInput
+    create: XOR<QuestionCreateWithoutMeetingInput, QuestionUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type QuestionCreateManyMeetingInputEnvelope = {
+    data: QuestionCreateManyMeetingInput | QuestionCreateManyMeetingInput[]
     skipDuplicates?: boolean
   }
 
@@ -15626,6 +16285,7 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUpdateManyWithoutProjectNestedInput
@@ -15640,10 +16300,50 @@ export namespace Prisma {
     githubUrl?: StringFieldUpdateOperationsInput | string
     githubToken?: NullableStringFieldUpdateOperationsInput | string | null
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
     Commit?: CommitUncheckedUpdateManyWithoutProjectNestedInput
     SavedQuestion?: QuestionUncheckedUpdateManyWithoutProjectNestedInput
     SourceCodeEmbedding?: SourceCodeEmbeddingUncheckedUpdateManyWithoutProjectNestedInput
     UserToProject?: UserToProjectUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type UserUpsertWithoutMeetingsInput = {
+    update: XOR<UserUpdateWithoutMeetingsInput, UserUncheckedUpdateWithoutMeetingsInput>
+    create: XOR<UserCreateWithoutMeetingsInput, UserUncheckedCreateWithoutMeetingsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMeetingsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMeetingsInput, UserUncheckedUpdateWithoutMeetingsInput>
+  }
+
+  export type UserUpdateWithoutMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    credits?: IntFieldUpdateOperationsInput | number
+    QuestionAsked?: QuestionUpdateManyWithoutUserNestedInput
+    UserToProject?: UserToProjectUpdateManyWithoutUserNestedInput
+    StripeTransactions?: StripeTransactionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    credits?: IntFieldUpdateOperationsInput | number
+    QuestionAsked?: QuestionUncheckedUpdateManyWithoutUserNestedInput
+    UserToProject?: UserToProjectUncheckedUpdateManyWithoutUserNestedInput
+    StripeTransactions?: StripeTransactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type IssueUpsertWithWhereUniqueWithoutMeetingInput = {
@@ -15669,12 +16369,27 @@ export namespace Prisma {
     id?: StringFilter<"Issue"> | string
     createdAt?: DateTimeFilter<"Issue"> | Date | string
     updatedAt?: DateTimeFilter<"Issue"> | Date | string
-    start?: StringFilter<"Issue"> | string
-    end?: StringFilter<"Issue"> | string
-    gist?: StringFilter<"Issue"> | string
-    headline?: StringFilter<"Issue"> | string
-    Summary?: StringFilter<"Issue"> | string
+    title?: StringFilter<"Issue"> | string
+    description?: StringFilter<"Issue"> | string
+    status?: StringFilter<"Issue"> | string
+    priority?: StringFilter<"Issue"> | string
     meetingId?: StringFilter<"Issue"> | string
+  }
+
+  export type QuestionUpsertWithWhereUniqueWithoutMeetingInput = {
+    where: QuestionWhereUniqueInput
+    update: XOR<QuestionUpdateWithoutMeetingInput, QuestionUncheckedUpdateWithoutMeetingInput>
+    create: XOR<QuestionCreateWithoutMeetingInput, QuestionUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type QuestionUpdateWithWhereUniqueWithoutMeetingInput = {
+    where: QuestionWhereUniqueInput
+    data: XOR<QuestionUpdateWithoutMeetingInput, QuestionUncheckedUpdateWithoutMeetingInput>
+  }
+
+  export type QuestionUpdateManyWithWhereWithoutMeetingInput = {
+    where: QuestionScalarWhereInput
+    data: XOR<QuestionUpdateManyMutationInput, QuestionUncheckedUpdateManyWithoutMeetingInput>
   }
 
   export type MeetingCreateWithoutIssuesInput = {
@@ -15682,9 +16397,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
     status?: $Enums.MeetingStatus
     Project: ProjectCreateNestedOneWithoutMeetingsInput
+    User: UserCreateNestedOneWithoutMeetingsInput
+    questions?: QuestionCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingUncheckedCreateWithoutIssuesInput = {
@@ -15692,9 +16411,13 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
     projectId: string
+    userId: string
     status?: $Enums.MeetingStatus
+    questions?: QuestionUncheckedCreateNestedManyWithoutMeetingInput
   }
 
   export type MeetingCreateOrConnectWithoutIssuesInput = {
@@ -15718,9 +16441,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
     Project?: ProjectUpdateOneRequiredWithoutMeetingsNestedInput
+    User?: UserUpdateOneRequiredWithoutMeetingsNestedInput
+    questions?: QuestionUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutIssuesInput = {
@@ -15728,9 +16455,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
     projectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    questions?: QuestionUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type UserCreateWithoutStripeTransactionsInput = {
@@ -15744,6 +16475,7 @@ export namespace Prisma {
     credits?: number
     QuestionAsked?: QuestionCreateNestedManyWithoutUserInput
     UserToProject?: UserToProjectCreateNestedManyWithoutUserInput
+    meetings?: MeetingCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStripeTransactionsInput = {
@@ -15757,6 +16489,7 @@ export namespace Prisma {
     credits?: number
     QuestionAsked?: QuestionUncheckedCreateNestedManyWithoutUserInput
     UserToProject?: UserToProjectUncheckedCreateNestedManyWithoutUserInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStripeTransactionsInput = {
@@ -15786,6 +16519,7 @@ export namespace Prisma {
     credits?: IntFieldUpdateOperationsInput | number
     QuestionAsked?: QuestionUpdateManyWithoutUserNestedInput
     UserToProject?: UserToProjectUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStripeTransactionsInput = {
@@ -15799,6 +16533,7 @@ export namespace Prisma {
     credits?: IntFieldUpdateOperationsInput | number
     QuestionAsked?: QuestionUncheckedUpdateManyWithoutUserNestedInput
     UserToProject?: UserToProjectUncheckedUpdateManyWithoutUserNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CommitCreateManyProjectInput = {
@@ -15821,6 +16556,7 @@ export namespace Prisma {
     answer: string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     userId: string
+    meetingId?: string | null
   }
 
   export type SourceCodeEmbeddingCreateManyProjectInput = {
@@ -15842,7 +16578,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     name: string
-    meetingUrl: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
+    userId: string
     status?: $Enums.MeetingStatus
   }
 
@@ -15890,6 +16629,7 @@ export namespace Prisma {
     answer?: StringFieldUpdateOperationsInput | string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     User?: UserUpdateOneRequiredWithoutQuestionAskedNestedInput
+    Meeting?: MeetingUpdateOneWithoutQuestionsNestedInput
   }
 
   export type QuestionUncheckedUpdateWithoutProjectInput = {
@@ -15900,6 +16640,7 @@ export namespace Prisma {
     answer?: StringFieldUpdateOperationsInput | string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     userId?: StringFieldUpdateOperationsInput | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuestionUncheckedUpdateManyWithoutProjectInput = {
@@ -15910,6 +16651,7 @@ export namespace Prisma {
     answer?: StringFieldUpdateOperationsInput | string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     userId?: StringFieldUpdateOperationsInput | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SourceCodeEmbeddingUpdateWithoutProjectInput = {
@@ -15959,9 +16701,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    User?: UserUpdateOneRequiredWithoutMeetingsNestedInput
     issues?: IssueUpdateManyWithoutMeetingNestedInput
+    questions?: QuestionUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateWithoutProjectInput = {
@@ -15969,9 +16715,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
     issues?: IssueUncheckedUpdateManyWithoutMeetingNestedInput
+    questions?: QuestionUncheckedUpdateManyWithoutMeetingNestedInput
   }
 
   export type MeetingUncheckedUpdateManyWithoutProjectInput = {
@@ -15979,7 +16729,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     name?: StringFieldUpdateOperationsInput | string
-    meetingUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
   }
 
@@ -15991,6 +16744,7 @@ export namespace Prisma {
     answer: string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId: string
+    meetingId?: string | null
   }
 
   export type UserToProjectCreateManyUserInput = {
@@ -16007,6 +16761,18 @@ export namespace Prisma {
     credits: number
   }
 
+  export type MeetingCreateManyUserInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    name: string
+    cloudinaryUrl: string
+    cloudinaryPublicId: string
+    summary?: string | null
+    projectId: string
+    status?: $Enums.MeetingStatus
+  }
+
   export type QuestionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16015,6 +16781,7 @@ export namespace Prisma {
     answer?: StringFieldUpdateOperationsInput | string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     Project?: ProjectUpdateOneRequiredWithoutSavedQuestionNestedInput
+    Meeting?: MeetingUpdateOneWithoutQuestionsNestedInput
   }
 
   export type QuestionUncheckedUpdateWithoutUserInput = {
@@ -16025,6 +16792,7 @@ export namespace Prisma {
     answer?: StringFieldUpdateOperationsInput | string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId?: StringFieldUpdateOperationsInput | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type QuestionUncheckedUpdateManyWithoutUserInput = {
@@ -16035,6 +16803,7 @@ export namespace Prisma {
     answer?: StringFieldUpdateOperationsInput | string
     fileReferences?: NullableJsonNullValueInput | InputJsonValue
     projectId?: StringFieldUpdateOperationsInput | string
+    meetingId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserToProjectUpdateWithoutUserInput = {
@@ -16079,48 +16848,128 @@ export namespace Prisma {
     credits?: IntFieldUpdateOperationsInput | number
   }
 
+  export type MeetingUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    Project?: ProjectUpdateOneRequiredWithoutMeetingsNestedInput
+    issues?: IssueUpdateManyWithoutMeetingNestedInput
+    questions?: QuestionUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    issues?: IssueUncheckedUpdateManyWithoutMeetingNestedInput
+    questions?: QuestionUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    cloudinaryUrl?: StringFieldUpdateOperationsInput | string
+    cloudinaryPublicId?: StringFieldUpdateOperationsInput | string
+    summary?: NullableStringFieldUpdateOperationsInput | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+  }
+
   export type IssueCreateManyMeetingInput = {
     id?: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    start: string
-    end: string
-    gist: string
-    headline: string
-    Summary: string
+    title: string
+    description: string
+    status: string
+    priority: string
+  }
+
+  export type QuestionCreateManyMeetingInput = {
+    id?: string
+    createdAt?: Date | string
+    updateAt?: Date | string
+    question: string
+    answer: string
+    fileReferences?: NullableJsonNullValueInput | InputJsonValue
+    projectId: string
+    userId: string
   }
 
   export type IssueUpdateWithoutMeetingInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    start?: StringFieldUpdateOperationsInput | string
-    end?: StringFieldUpdateOperationsInput | string
-    gist?: StringFieldUpdateOperationsInput | string
-    headline?: StringFieldUpdateOperationsInput | string
-    Summary?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
   }
 
   export type IssueUncheckedUpdateWithoutMeetingInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    start?: StringFieldUpdateOperationsInput | string
-    end?: StringFieldUpdateOperationsInput | string
-    gist?: StringFieldUpdateOperationsInput | string
-    headline?: StringFieldUpdateOperationsInput | string
-    Summary?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
   }
 
   export type IssueUncheckedUpdateManyWithoutMeetingInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    start?: StringFieldUpdateOperationsInput | string
-    end?: StringFieldUpdateOperationsInput | string
-    gist?: StringFieldUpdateOperationsInput | string
-    headline?: StringFieldUpdateOperationsInput | string
-    Summary?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type QuestionUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    question?: StringFieldUpdateOperationsInput | string
+    answer?: StringFieldUpdateOperationsInput | string
+    fileReferences?: NullableJsonNullValueInput | InputJsonValue
+    Project?: ProjectUpdateOneRequiredWithoutSavedQuestionNestedInput
+    User?: UserUpdateOneRequiredWithoutQuestionAskedNestedInput
+  }
+
+  export type QuestionUncheckedUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    question?: StringFieldUpdateOperationsInput | string
+    answer?: StringFieldUpdateOperationsInput | string
+    fileReferences?: NullableJsonNullValueInput | InputJsonValue
+    projectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type QuestionUncheckedUpdateManyWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updateAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    question?: StringFieldUpdateOperationsInput | string
+    answer?: StringFieldUpdateOperationsInput | string
+    fileReferences?: NullableJsonNullValueInput | InputJsonValue
+    projectId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
 

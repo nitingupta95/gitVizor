@@ -9,7 +9,15 @@ const TeamMember = () => {
   return (
     <div className='flex items-center gap-2'>
         {members?.map((member)=>(
-            <img key={member.id} src={member.User.imageUrl ?? ""} alt={member.User.firstName ?? ""} height={30} width={30} className='w-8 h-8 rounded-full'/>
+            <img
+              key={member.id}
+              src={member.User.imageUrl ?? ""}
+              alt={member.User.firstName ?? ""}
+              title={member.User.firstName ?? ""}
+              height={30}
+              width={30}
+              className='w-8 h-8 rounded-full ring-1 ring-border/60 ring-offset-1 ring-offset-background'
+            />
              
         ))}
         

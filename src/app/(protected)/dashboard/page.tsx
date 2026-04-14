@@ -18,16 +18,16 @@ const page = () => {
     const {project}= useProject();
     
   return (
-    <div>  
-      {project?.id}
+    <div className="space-y-6">  
+      {/* {project?.id} */}
       <div className="flex items-center justify-between flex-wrap gap-y-4">
-        <div className="rounded-mg bg-primary px-4 py-3 w-fit">
+        <div className="rounded-xl border border-border/60 bg-card/40 px-4 py-3 shadow-[0_0_0_1px_rgba(255,255,255,0.04)] backdrop-blur">
           <div className="flex items-center">
-            <Github className='size-5 text-white'/>
+            <Github className='size-5 text-foreground'/>
             <div className='ml-2'>
-              <p className='text-sm font-medium text-white'>
+              <p className='text-sm font-medium text-foreground'>
                 This project is linked to {''}
-                <Link href={project?.githubUrl ?? ""} className='inline-flex items-center text-white/80 hover:underline'>
+                <Link href={project?.githubUrl ?? ""} className='inline-flex items-center text-foreground/70 hover:text-foreground hover:underline'>
                   {project?.githubUrl}
                   <ExternalLink className='m-1 size-4'/>
                 </Link>
@@ -38,7 +38,7 @@ const page = () => {
 
         <div className="h-4"></div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <TeamMember/> 
           <InviteButton/>
           <ArchiveButton/>
@@ -47,14 +47,14 @@ const page = () => {
       </div>
 
 
-      <div className='mt-4'>
+      <div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-5">
          <AskQuestionCard/>
           <MeetingCard/>
         </div>
       </div>
 
-      <div className='mt-8'>
+      <div>
         <CommitLog/>
       </div>
 

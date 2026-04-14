@@ -72,7 +72,7 @@ const AskQuestionCard = () => {
   return (
     <>
      <Dialog open={open} onOpenChange={setOpen}>
-  <DialogContent className='sm:max-w-[80vw] max-h-[80vh] overflow-auto'>
+  <DialogContent className='sm:max-w-[80vw] max-h-[80vh] overflow-auto border border-border/60 bg-background/80 backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,0.35)]'>
     <DialogHeader>
       <DialogTitle className="flex items-center gap-2">
         <Image src="/log.png" alt="logo" width={40} height={40} />
@@ -83,7 +83,7 @@ const AskQuestionCard = () => {
     <div className="mt-4">
       <MDEditor.Markdown 
         source={answer} 
-        className='max-w-full !h-64 overflow-auto border rounded p-2'
+        className='max-w-full !h-64 overflow-auto border border-border/60 rounded-lg p-3 bg-muted/30'
       />
 
       <div className="mt-4">
@@ -118,9 +118,9 @@ const AskQuestionCard = () => {
 </Dialog>
 
 
-      <Card className="relative col-span-3">
-        <CardHeader>
-          <CardTitle>Ask a question</CardTitle>
+      <Card className="relative col-span-3 border border-border/60 bg-card/50 shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-semibold tracking-tight">Ask a question</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSubmit}>
