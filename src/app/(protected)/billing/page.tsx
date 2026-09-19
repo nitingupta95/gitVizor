@@ -45,13 +45,15 @@ const BillingContent = () => {
 
     const current = user.credits ?? 0
     const prePaymentStr = localStorage.getItem("prePaymentCredits")
-    
-    // If we don't have a baseline, just assume success after 2 seconds
+
+    // If no baseline stored, stop polling as soon as we have any credits
     if (!prePaymentStr) {
-      setTimeout(() => {
+      if (current > 0) {
         setCredited(true)
         setPolling(false)
-      }, 2000)
+        if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current)
+        setTimeout(() => router.replace("/billing"), 3000)
+      }
       return
     }
 
@@ -63,11 +65,7 @@ const BillingContent = () => {
       setPolling(false)
       localStorage.removeItem("prePaymentCredits")
       if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current)
-      
-      // Clean ?success=true from URL after a short delay
-      setTimeout(() => {
-        router.replace("/billing")
-      }, 5000)
+      setTimeout(() => router.replace("/billing"), 3000)
     }
   }, [user, paymentSuccess, router])
 
