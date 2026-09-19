@@ -111,7 +111,8 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next();
 
   const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  const { logger } = await import('@/lib/logger');
+  logger.info({ path, durationMs: end - start }, `[TRPC] executed`);
 
   return result;
 });

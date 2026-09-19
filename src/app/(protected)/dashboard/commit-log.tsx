@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import useProject from '@/hooks/use-project'
 import { api } from '@/trpc/react'
@@ -9,7 +10,7 @@ import { cn } from '@/lib/utils' // make sure this exists
 
 const CommitLog = () => {
   const { projectId, project } = useProject()
-  const { data: commits = [], error } = api.project.getCommits.useQuery({ projectId: projectId as string })
+  const { data: commits = [], error } = api.project.getCommits.useQuery({ projectId: projectId! })
 
   useEffect(() => {
     if (error) {

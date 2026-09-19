@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import useProject from "@/hooks/use-project";
 import { useDropzone } from "react-dropzone";
 import React from "react";
-import { Presentation, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -26,65 +26,67 @@ const MeetingCard = () => {
     },
     multiple: false,
     maxSize: 500 * 1024 * 1024, // 500MB
-    onDrop: async (acceptedFiles) => {
-      if (!project) {
-        toast.error("Please select a project before uploading a meeting.");
-        return;
-      }
-      setIsUploading(true);
+    onDrop: (acceptedFiles) => {
+      void (async () => {
+        if (!project) {
+          toast.error("Please select a project before uploading a meeting.");
+          return;
+        }
+        setIsUploading(true);
 
-      const file = acceptedFiles[0];
-      if (!file) {
-        setIsUploading(false);
-        return;
-      }
+        const file = acceptedFiles[0];
+        if (!file) {
+          setIsUploading(false);
+          return;
+        }
 
-      try {
-        // 1. Get signature from our server
-        const { signature, timestamp } =
-          await getCloudinarySignature.mutateAsync();
+        try {
+          // 1. Get signature from our server
+          const { signature, timestamp } =
+            await getCloudinarySignature.mutateAsync();
 
-        // 2. Upload directly to Cloudinary
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("api_key", env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
-        formData.append("signature", signature);
-        formData.append("timestamp", timestamp.toString());
+          // 2. Upload directly to Cloudinary
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("api_key", env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+          formData.append("signature", signature);
+          formData.append("timestamp", timestamp.toString());
 
-        const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload`;
+          const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/video/upload`;
 
-        const cloudinaryResponse = await axios.post(cloudinaryUrl, formData);
+          const cloudinaryResponse = await axios.post(cloudinaryUrl, formData);
 
-        const { secure_url, public_id } = cloudinaryResponse.data;
+          const { secure_url, public_id } = cloudinaryResponse.data;
 
-        // 3. Save meeting details to our database
-        createMeeting.mutate(
-          {
-            name: file.name,
-            cloudinaryUrl: secure_url,
-            cloudinaryPublicId: public_id,
-            projectId: project.id,
-          },
-          {
-            onSuccess: () => {
-              toast.success("Meeting uploaded successfully!");
-              router.push(`/meetings`);
+          // 3. Save meeting details to our database
+          createMeeting.mutate(
+            {
+              name: file.name,
+              cloudinaryUrl: secure_url,
+              cloudinaryPublicId: public_id,
+              projectId: project.id,
             },
-            onError: (error) => {
-              toast.error("Error saving meeting: " + error.message);
-            },
-            onSettled: () => {
-              setIsUploading(false);
-            },
-          }
-        );
-      } catch (error) {
-        console.error("Upload error:", error);
-        toast.error(
-          "An error occurred during upload. Please check the console and try again."
-        );
-        setIsUploading(false);
-      }
+            {
+              onSuccess: () => {
+                toast.success("Meeting uploaded successfully!");
+                router.push(`/meetings`);
+              },
+              onError: (error) => {
+                toast.error("Error saving meeting: " + error.message);
+              },
+              onSettled: () => {
+                setIsUploading(false);
+              },
+            }
+          );
+        } catch (error) {
+          console.error("Upload error:", error);
+          toast.error(
+            "An error occurred during upload. Please check the console and try again."
+          );
+          setIsUploading(false);
+        }
+      })();
     },
   });
 

@@ -1,6 +1,5 @@
 'use client'
 import useProject from '@/hooks/use-project';
-import { useUser } from '@clerk/nextjs'
 import { ExternalLink, Github } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
@@ -13,38 +12,38 @@ import TeamMember from './team-member';
 
 const InviteButton = dynamic(() => import('./invite-button'), { ssr: false });
 
-const page = () => {
-    const { user } = useUser();
+const DashboardPage = () => {
     const {project}= useProject();
     
   return (
     <div className="space-y-6">  
       {/* {project?.id} */}
-      <div className="flex items-center justify-between flex-wrap gap-y-4">
-        <div className="rounded-xl border border-border/40 bg-card/60 px-5 py-3.5 shadow-[0_4px_16px_rgba(0,0,0,0.1)] backdrop-blur-sm">
-          <div className="flex items-center">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-              <Github className='size-4 text-primary'/>
-            </div>
-            <div className='ml-3'>
-              <p className='text-sm font-medium text-foreground'>
-                This project is linked to {''}
-                <Link href={project?.githubUrl ?? ""} className='inline-flex items-center text-primary hover:text-primary/80 hover:underline transition-colors'>
-                  {project?.githubUrl}
-                  <ExternalLink className='m-1 size-3.5'/>
-                </Link>
-              </p>
-            </div>
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        {/* GitHub Link Pill */}
+        <div className="group flex items-center rounded-full border border-border/40 bg-card/60 px-4 py-2 shadow-sm backdrop-blur-md transition-all hover:bg-accent/40 hover:shadow-md">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
+            <Github className="size-4 text-primary" />
+          </div>
+          <div className="ml-3 flex items-center gap-1.5">
+            <span className="text-sm font-medium text-muted-foreground">
+              Linked to
+            </span>
+            <Link
+              href={project?.githubUrl ?? ""}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-sm font-semibold text-foreground hover:text-primary transition-colors"
+            >
+              {project?.githubUrl?.replace('https://github.com/', '')}
+              <ExternalLink className="ml-1 size-3.5 opacity-50 transition-opacity group-hover:opacity-100" />
+            </Link>
           </div>
         </div>
 
-        <div className="h-4"></div>
-
         <div className="flex items-center gap-3">
-          <TeamMember/> 
-          <InviteButton/>
-          <ArchiveButton/>
-          
+          <TeamMember />
+          <InviteButton />
+          <ArchiveButton />
         </div>
       </div>
 
@@ -65,4 +64,4 @@ const page = () => {
   )
 }
 
-export default page
+export default DashboardPage

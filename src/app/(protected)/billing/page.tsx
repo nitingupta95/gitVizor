@@ -1,27 +1,105 @@
 "use client"
 
+import { Suspense } from "react"
 import { Button } from "@/components/ui/button"
-import { createCheckoutSession } from "@/lib/stripe"
+import { createCheckoutSession } from "@/features/billing/actions"
 import { api } from "@/trpc/react"
 import { Slider } from "@/components/ui/slider"
-import { Info, CreditCard, Coins, Sparkles } from "lucide-react"
-import React from "react"
+import { Info, CreditCard, Coins, Sparkles, CheckCircle2, Loader2 } from "lucide-react"
+import React, { useEffect, useRef } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
 
-const BillingPage = () => {
+// ── Inner component that safely uses useSearchParams ──
+const BillingContent = () => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const paymentSuccess = searchParams.get("success") === "true"
+
   // fetch credits from API
-  const { data: user } = api.project.getMyCredits.useQuery()
+  const { data: user } = api.project.getMyCredits.useQuery(undefined, {
+    // When returning from payment, refetch every 2s so we catch the webhook update
+    refetchInterval: paymentSuccess ? 2000 : false,
+  })
 
-  // slider expects an array of numbers like [100]
+  const [credited, setCredited] = React.useState(false)
+  const [polling, setPolling] = React.useState(paymentSuccess)
+  const pollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (!paymentSuccess) return
+
+    // Stop polling after 30s even if webhook hasn't fired
+    pollTimeoutRef.current = setTimeout(() => {
+      setPolling(false)
+      // Clean the URL
+      router.replace("/billing")
+    }, 30_000)
+
+    return () => {
+      if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current)
+    }
+  }, [paymentSuccess, router])
+
+  useEffect(() => {
+    if (!paymentSuccess || !user) return
+
+    const current = user.credits ?? 0
+    const prePaymentStr = localStorage.getItem("prePaymentCredits")
+    
+    // If we don't have a baseline, just assume success after 2 seconds
+    if (!prePaymentStr) {
+      setTimeout(() => {
+        setCredited(true)
+        setPolling(false)
+      }, 2000)
+      return
+    }
+
+    const prePayment = parseInt(prePaymentStr, 10)
+
+    if (current > prePayment) {
+      // Credits have increased — webhook landed!
+      setCredited(true)
+      setPolling(false)
+      localStorage.removeItem("prePaymentCredits")
+      if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current)
+      
+      // Clean ?success=true from URL after a short delay
+      setTimeout(() => {
+        router.replace("/billing")
+      }, 5000)
+    }
+  }, [user, paymentSuccess, router])
+
   const [creditsToBuy, setCreditsToBuy] = React.useState<number[]>([100])
-
-  // get the first value from the array
   const creditsToBuyAmount = creditsToBuy[0]!
-
-  // calculate price
   const price = (creditsToBuyAmount / 50).toFixed(2)
 
   return (
     <div className="space-y-6">
+      {/* Payment success banner */}
+      {(paymentSuccess || credited) && (
+        <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 flex items-center gap-3">
+          {polling && !credited ? (
+            <>
+              <Loader2 className="h-5 w-5 text-emerald-400 animate-spin flex-shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-emerald-300">Payment successful!</p>
+                <p className="text-xs text-emerald-400/70">Waiting for credits to be added to your account…</p>
+              </div>
+            </>
+          ) : (
+            <>
+              <CheckCircle2 className="h-5 w-5 text-emerald-400 flex-shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-emerald-300">Credits added successfully!</p>
+                <p className="text-xs text-emerald-400/70">Your account has been topped up. Happy building!</p>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
       {/* Header Card */}
       <div className="rounded-2xl border border-border/40 bg-card/60 p-6 shadow-[0_4px_20px_rgba(0,0,0,0.12)] backdrop-blur-sm">
         <div className="flex items-center justify-between gap-4">
@@ -32,7 +110,8 @@ const BillingPage = () => {
             <div>
               <h1 className="text-2xl font-semibold tracking-tight">Billing</h1>
               <p className="text-sm text-muted-foreground">
-                You currently have <span className="font-semibold text-primary">{user?.credits ?? 0}</span> credits.
+                You currently have{" "}
+                <span className="font-semibold text-primary">{user?.credits ?? 0}</span> credits.
               </p>
             </div>
           </div>
@@ -82,6 +161,9 @@ const BillingPage = () => {
         <div className="mt-8">
           <Button
             onClick={() => {
+              if (user?.credits !== undefined) {
+                localStorage.setItem("prePaymentCredits", user.credits.toString())
+              }
               createCheckoutSession(creditsToBuyAmount)
             }}
             className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all hover:shadow-primary/30"
@@ -93,6 +175,19 @@ const BillingPage = () => {
         </div>
       </div>
     </div>
+  )
+}
+
+// ── Page wrapper with Suspense boundary (required for useSearchParams) ──
+const BillingPage = () => {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-48">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    }>
+      <BillingContent />
+    </Suspense>
   )
 }
 

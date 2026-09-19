@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import multer from "multer";
-import cloudinary from "~/lib/cloudinary";
+import cloudinary from "~/lib/third-party/cloudinary";
 import { Readable } from "stream";
+import { auth } from "@clerk/nextjs/server";
+import { uploadRateLimit } from "@/lib/ratelimit";
 
 // Disable Next.js body parsing for this route
 export const config = {
@@ -37,6 +39,18 @@ async function bufferToStream(buffer: Buffer) {
 }
 
 export async function POST(req: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (uploadRateLimit) {
+    const { success } = await uploadRateLimit.limit(userId);
+    if (!success) {
+      return NextResponse.json({ error: "Rate limit exceeded: You can only upload 5 files per day." }, { status: 429 });
+    }
+  }
+
   const res = new NextResponse();
   try {
     await runMiddleware(req, res, upload.single("file"));
@@ -56,7 +70,12 @@ export async function POST(req: NextRequest) {
         },
         (error, result) => {
           if (error) {
-            reject(error);
+            if (error instanceof Error) {
+              // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
+              reject(error);
+            } else {
+              reject(new Error(typeof error === "string" ? error : JSON.stringify(error) || "Upload error"));
+            }
           } else {
             resolve(result);
           }

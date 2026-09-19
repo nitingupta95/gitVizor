@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 import useProject from '@/hooks/use-project';
 import { api } from '@/trpc/react';

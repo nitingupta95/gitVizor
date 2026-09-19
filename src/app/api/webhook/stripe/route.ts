@@ -4,6 +4,7 @@ import Stripe from 'stripe';
 import { NextResponse , NextRequest} from 'next/server';
 import { db } from '@/server/db';
 import { clerkClient } from '@clerk/nextjs/server';
+import { logger } from '@/lib/logger';
 
 
 
@@ -25,9 +26,9 @@ export async function POST(req: Request) {
             signature,
             endpointSecret
         );
-        console.log(`>>> Stripe Webhook: Verified Event Type: ${event.type}`);
+        logger.info(`>>> Stripe Webhook: Verified Event Type: ${event.type}`);
     } catch (error: any) {
-        console.error('❌ Stripe Webhook Signature Verification Failed:', error.message);
+        logger.error({ err: error }, '❌ Stripe Webhook Signature Verification Failed');
         return NextResponse.json({ error: 'Invalid signature verification', details: error.message }, { status: 400 });
     }
 
@@ -38,7 +39,7 @@ export async function POST(req: Request) {
         const creditsString = session.metadata?.credits;
 
         if (!userId || !creditsString) {
-            console.error('❌ Missing userId or credits in session object');
+            logger.error({ userId, creditsString }, '❌ Missing userId or credits in session object');
             return NextResponse.json({ error: 'Missing session data' }, { status: 400 });
         }
 
@@ -54,13 +55,13 @@ export async function POST(req: Request) {
                 clerkUserRecord = await client.users.getUser(userId);
                 userEmail = clerkUserRecord.emailAddresses[0]?.emailAddress ?? "";
             } catch (clerkErr: any) {
-                console.warn(`⚠️ Clerk lookup failed for ${userId}: ${clerkErr.message}`);
+                logger.warn({ userId, err: clerkErr }, `⚠️ Clerk lookup failed`);
                 const existingUser = await db.user.findUnique({ where: { id: userId } });
                 if (!existingUser) throw new Error(`User ${userId} not found in Clerk or DB`);
                 userEmail = existingUser.emailAddress;
             }
 
-            console.log(`>>> Processing Credit Transaction: ${userEmail} (+${credits} credits)`);
+            logger.info({ userEmail, credits }, `>>> Processing Credit Transaction`);
 
             let attempts = 0;
             const maxAttempts = 3;
@@ -69,36 +70,36 @@ export async function POST(req: Request) {
                     await db.$transaction([
                         db.user.upsert({
                             where: { id: userId },
-                            update: { emailAddress: userEmail },
+                            update: { 
+                                emailAddress: userEmail,
+                                credits: { increment: credits }
+                            },
                             create: {
                                 id: userId,
                                 emailAddress: userEmail,
                                 imageUrl: clerkUserRecord?.imageUrl ?? "",
                                 firstName: clerkUserRecord?.firstName ?? "",
                                 lastName: clerkUserRecord?.lastName ?? "",
+                                credits: 150 + credits,
                             }
                         }),
                         db.stripeTransaction.create({
                             data: { userId, credits }
-                        }),
-                        db.user.update({
-                            where: { id: userId },
-                            data: { credits: { increment: credits } }
                         })
                     ]);
                     break;
                 } catch (err: any) {
                     attempts++;
-                    console.warn(`⚠️ DB Attempt ${attempts} failed: ${err.message}`);
+                    logger.warn({ attempts, err }, `⚠️ DB Attempt failed`);
                     if (attempts >= maxAttempts) throw err;
                     await new Promise(resolve => setTimeout(resolve, 1000));
                 }
             }
 
-            console.log(`✅ SUCCESS: ${credits} Credits added to user ${userId}`);
+            logger.info({ userId, credits }, `✅ SUCCESS: Credits added`);
             return NextResponse.json({ message: 'Credits added successfully' }, { status: 200 });
         } catch (dbError: any) {
-            console.error('❌ OPERATION FAILED:', dbError.message);
+            logger.error({ err: dbError }, '❌ OPERATION FAILED');
             return NextResponse.json({ error: 'Operation failed', details: dbError.message }, { status: 500 });
         }
     }
