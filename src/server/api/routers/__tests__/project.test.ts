@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { projectRouter } from '../project';
 import { db } from '@/server/db';
 import * as clerk from '@clerk/nextjs/server';
 import { createCallerFactory } from '../../trpc';
-import * as githubLoader from '@/lib/github-loader';
+import * as githubLoader from '@/lib/github/loader';
 
 vi.mock('@/server/db', () => ({
   db: {
@@ -18,7 +19,7 @@ vi.mock('@/server/db', () => ({
   }
 }));
 
-vi.mock('@/lib/github-loader', () => ({
+vi.mock('@/lib/github/loader', () => ({
   checkCredits: vi.fn(),
   indexGithubRepo: vi.fn().mockResolvedValue(true)
 }));

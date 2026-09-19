@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedprocedure } from "../trpc";
 import { db } from "~/server/db";
-import cloudinary from "@/lib/cloudinary";
+import cloudinary from "@/lib/third-party/cloudinary";
 
 export const meetingRouter = createTRPCRouter({
   createMeeting: protectedprocedure
@@ -40,6 +40,9 @@ export const meetingRouter = createTRPCRouter({
           projectId: input.projectId,
           userId: ctx.user.userId,
         },
+        include: {
+          issues: true,
+        },
         orderBy: {
           createdAt: "desc",
         },
@@ -75,11 +78,14 @@ export const meetingRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const meeting = await db.meeting.findUnique({
         where: { id: input.meetingId },
-        select: { projectId: true },
+        select: { projectId: true, userId: true },
       });
 
       if (!meeting) {
         throw new Error("Meeting not found");
+      }
+      if (meeting.userId !== ctx.user.userId) {
+        throw new Error("Unauthorized: You do not own this meeting");
       }
       if (!ctx.user.userId) {
         throw new Error("User not found");
@@ -100,6 +106,14 @@ export const meetingRouter = createTRPCRouter({
   deleteMeeting: protectedprocedure
     .input(z.object({ meetingId: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const meetingToVerify = await db.meeting.findUnique({
+        where: { id: input.meetingId },
+        select: { userId: true },
+      });
+
+      if (!meetingToVerify) throw new Error("Meeting not found");
+      if (meetingToVerify.userId !== ctx.user.userId) throw new Error("Unauthorized: You do not own this meeting");
+
       // First, delete related issues
       await db.issue.deleteMany({
         where: {

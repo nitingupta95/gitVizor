@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { POST } from '../route';
 import { db } from '@/server/db';
-import Stripe from 'stripe';
 import * as clerk from '@clerk/nextjs/server';
 
 vi.mock('@/server/db', () => ({

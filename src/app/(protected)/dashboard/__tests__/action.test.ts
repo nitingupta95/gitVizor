@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { askQuestion } from '../action';
 import { db } from '@/server/db';
-import * as gemini from '@/lib/gemini';
-import * as aiSdkRsc from '@ai-sdk/rsc';
+import * as gemini from '@/lib/ai';
 import * as aiSdk from 'ai';
 
 vi.mock('@/server/db', () => ({
@@ -11,7 +11,7 @@ vi.mock('@/server/db', () => ({
   }
 }));
 
-vi.mock('@/lib/gemini', () => ({
+vi.mock('@/lib/ai', () => ({
   generateEmbedding: vi.fn(),
 }));
 

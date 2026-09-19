@@ -1,0 +1,13 @@
+- [x] Restructure Project Directories
+  - [x] Create `src/lib/ai/` and migrate AI tools
+  - [x] Create `src/lib/github/` and migrate GitHub operations
+  - [x] Create `src/lib/third-party/` and migrate external SDKs
+  - [x] Refactor `inngest` background jobs and add a barrel index
+  - [x] Move Stripe checkout actions into `src/features/billing/actions.ts`
+  - [x] Move all root-level utility scripts into `/scripts`
+- [x] Update imports globally to match the new architecture
+- [x] Ensure 0 new TypeScript compilation errors
+- [x] Debug and fix the "credits do not increase" issue
+  - [x] Identify webhook is working, but UI is experiencing a race condition when returning from Stripe
+  - [x] Update `src/app/(protected)/billing/page.tsx` to cache pre-payment credits in `localStorage`
+  - [x] Compare updated credits to `localStorage` baseline to accurately dismiss the "Waiting..." loader.

@@ -1,47 +1,82 @@
-"use client"
-import { Tabs, TabsContent } from '@/components/ui/tabs'
-import React from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { lucario } from "react-syntax-highlighter/dist/esm/styles/prism"
-import { cn } from "@/lib/utils"
+"use client";
+
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import React from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { cn } from "@/lib/utils";
+import { FileCode2 } from "lucide-react";
 
 type Props = {
-  filesReferences: { fileName: string; sourceCode: string; summary: string }[]
-}
+  filesReferences: { fileName: string; sourceCode: string; summary: string }[];
+};
 
 export const CodeReferences = ({ filesReferences }: Props) => {
-  
+  const [tab, setTab] = React.useState(filesReferences?.[0]?.fileName || "");
   if (!filesReferences || filesReferences.length === 0) return null;
-  const [tab, setTab] = React.useState(filesReferences[0].fileName)
+
   return (
-    <div className="max-w-[70vw]">
-      <Tabs value={tab} onValueChange={setTab}>
-        <div className="overflow-scroll flex gap-1.5 bg-muted/50 border border-border/40 p-1 rounded-xl backdrop-blur-sm">
-          {filesReferences.map((file) => (
-            <button
-              onClick={() => setTab(file.fileName)}
-              key={file.fileName}
-              className={cn(
-                "px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap text-muted-foreground hover:text-foreground hover:bg-background/50",
-                tab === file.fileName && "bg-primary text-primary-foreground shadow-md shadow-primary/20"
-              )}
-            >
-              {file.fileName}
-            </button>
-          ))}
+    <div className="w-full min-w-0 flex flex-col">
+      <Tabs value={tab} onValueChange={setTab} className="w-full flex flex-col min-w-0">
+        
+        {/* Tab List */}
+        <div className="flex gap-1.5 bg-muted/40 border border-border/40 p-1.5 rounded-xl overflow-x-auto no-scrollbar flex-shrink-0 w-full">
+          {filesReferences.map((file) => {
+            const isActive = tab === file.fileName;
+            return (
+              <button
+                onClick={() => setTab(file.fileName)}
+                key={file.fileName}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 whitespace-nowrap flex-shrink-0",
+                  isActive
+                    ? "bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 shadow-sm"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60 border border-transparent"
+                )}
+              >
+                <FileCode2 className={cn("w-3.5 h-3.5", isActive ? "text-indigo-400" : "opacity-60")} />
+                {file.fileName}
+              </button>
+            );
+          })}
         </div>
+
+        {/* Tab Content */}
         {filesReferences.map((file) => (
           <TabsContent
             key={file.fileName}
             value={file.fileName}
-            className="max-h-[40vh] overflow-scroll max-w-7xl rounded-xl border border-border/40 mt-2"
+            className="mt-3 w-full"
           >
-            <SyntaxHighlighter language="typescript" style={lucario}>
-              {file.sourceCode}
-            </SyntaxHighlighter>
+            <div className="rounded-xl border border-border/40 overflow-hidden bg-[#1e1e1e] w-full">
+              <div className="bg-muted/30 border-b border-border/20 px-4 py-2 flex justify-between items-center">
+                <span className="text-[10px] font-mono text-muted-foreground/60">{file.fileName}</span>
+              </div>
+              <SyntaxHighlighter 
+                language="typescript" 
+                style={vscDarkPlus}
+                customStyle={{
+                  margin: 0,
+                  padding: "1rem",
+                  background: "transparent",
+                  fontSize: "12px",
+                  lineHeight: "1.5",
+                }}
+                wrapLines={true}
+                showLineNumbers={true}
+                lineNumberStyle={{
+                  minWidth: "2.5em",
+                  paddingRight: "1em",
+                  color: "#6e7681",
+                  textAlign: "right",
+                }}
+              >
+                {file.sourceCode}
+              </SyntaxHighlighter>
+            </div>
           </TabsContent>
         ))}
       </Tabs>
     </div>
-  )
-}
+  );
+};

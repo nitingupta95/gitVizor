@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Commit {
@@ -31,12 +32,27 @@ model Project {
   githubToken         String?
   deletedAt           DateTime?
   Commit              Commit[]
-  SavedQuestion            Question[]
+  SavedQuestion       Question[]
   SourceCodeEmbedding SourceCodeEmbedding[]
   UserToProject       UserToProject[]
+  PublicShare         PublicShare?
 
-  meetings Meeting[]
-  status   ProjectStatus @default(PENDING)
+  meetings   Meeting[]
+  status     ProjectStatus @default(PENDING)
+  DocSection DocSection[]
+}
+
+model PublicShare {
+  id               String   @id @default(cuid())
+  projectId        String   @unique
+  project          Project  @relation(fields: [projectId], references: [id])
+  token            String   @unique @default(cuid())
+  enabled          Boolean  @default(true)
+  qaCapPeriodStart DateTime @default(now())
+  qaCreditsUsed    Int      @default(0)
+  qaCreditsCap     Int      @default(50)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
 
 enum ProjectStatus {
@@ -62,28 +78,28 @@ model Question {
 }
 
 model SourceCodeEmbedding {
-  id               String                  @id @default(cuid())
-  summaryEmbedding Unsupported("vector")?  
+  id               String                 @id @default(cuid())
+  summaryEmbedding Unsupported("vector")?
   sourceCode       String
   fileName         String
   summary          String
   projectId        String
-  Project          Project                 @relation(fields: [projectId], references: [id])
+  Project          Project                @relation(fields: [projectId], references: [id])
 }
 
 model User {
-  id            String          @id @default(cuid())
-  createdAt     DateTime        @default(now())
-  updateAt      DateTime        @updatedAt
-  imageUrl      String?
-  firstName     String?
-  lastName      String?
-  emailAddress  String          @unique
-  credits       Int             @default(150)
+  id                 String              @id @default(cuid())
+  createdAt          DateTime            @default(now())
+  updateAt           DateTime            @updatedAt
+  imageUrl           String?
+  firstName          String?
+  lastName           String?
+  emailAddress       String              @unique
+  credits            Int                 @default(150)
   QuestionAsked      Question[]
-  UserToProject UserToProject[]
+  UserToProject      UserToProject[]
   StripeTransactions StripeTransaction[]
-  meetings      Meeting[]
+  meetings           Meeting[]
 }
 
 model UserToProject {
@@ -99,32 +115,34 @@ model UserToProject {
 }
 
 model Meeting {
-  id                 String        @id @default(cuid())
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
+  id                 String                 @id @default(cuid())
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
   name               String
   cloudinaryUrl      String
   cloudinaryPublicId String
   summary            String?
+  summaryEmbedding   Unsupported("vector")?
   projectId          String
   userId             String
-  Project            Project       @relation(fields: [projectId], references: [id])
-  User               User          @relation(fields: [userId], references: [id])
-  status             MeetingStatus @default(PROCESSING)
+  Project            Project                @relation(fields: [projectId], references: [id])
+  User               User                   @relation(fields: [userId], references: [id])
+  status             MeetingStatus          @default(PROCESSING)
   issues             Issue[]
   questions          Question[]
 }
 
 model Issue {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  title       String
-  description String
-  status      String
-  priority    String
-  meetingId   String
-  Meeting     Meeting  @relation(fields: [meetingId], references: [id])
+  id               String                 @id @default(cuid())
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  title            String
+  description      String
+  summaryEmbedding Unsupported("vector")?
+  status           String
+  priority         String
+  meetingId        String
+  Meeting          Meeting                @relation(fields: [meetingId], references: [id])
 }
 
 enum MeetingStatus {
@@ -140,4 +158,31 @@ model StripeTransaction {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   credits   Int
+}
+
+model DocSection {
+  id                String           @id @default(cuid())
+  projectId         String
+  project           Project          @relation(fields: [projectId], references: [id])
+  parentId          String?
+  parent            DocSection?      @relation("DocSectionHierarchy", fields: [parentId], references: [id])
+  children          DocSection[]     @relation("DocSectionHierarchy")
+  slug              String
+  title             String
+  order             Int              @default(0)
+  content           String // markdown
+  sourceFileRefs    String[] // file paths this section is generated from
+  relatedMeetingIds String[] // Meeting ids referenced for "why" context
+  status            DocSectionStatus @default(GENERATING)
+  lastGeneratedAt   DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@unique([projectId, slug])
+}
+
+enum DocSectionStatus {
+  GENERATING
+  FRESH
+  STALE
 }

@@ -11,7 +11,7 @@ type Props={
 }
 
 const IssueList = ({ meetingId }: Props) => {
-    const {data:meeting, isLoading} = api.project.getMeetingById.useQuery({meetingId},{
+    const {data:meeting, isLoading} = api.meeting.getMeeting.useQuery({meetingId},{
         refetchInterval: 4000,
     })
 
@@ -51,7 +51,8 @@ const IssueList = ({ meetingId }: Props) => {
 }
 
 
-function IssueCard({issue}: {issue: NonNullable<RouterOutputs["project"]["getMeetingById"]>["issues"][number]}) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function IssueCard({issue}: {issue: NonNullable<RouterOutputs["meeting"]["getMeeting"]>["issues"][number]}) {
     const [open, setOpen] = React.useState(false);
     return (
         <>
@@ -59,19 +60,19 @@ function IssueCard({issue}: {issue: NonNullable<RouterOutputs["project"]["getMee
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        {issue.gist}
+                        {issue.title}
                     </DialogTitle>
                     <DialogDescription>
                         {new Date(issue.createdAt).toLocaleDateString()}
                     </DialogDescription>
                     <p className='mt-2 border-l-4 border-border bg-muted p-4'>
                         
-                        {issue.headline}
+                        {issue.description}
                     </p>
                     <blockquote className='mt-2 border-l-4 border-border bg-muted p-4'>
-                        <span className='text-sm text-muted-foreground'>{issue.start} - {issue.end}</span>
-                        <p className="font-medium italic leading-relaxed text-foreground">
-                            {issue.Summary}
+                        <span className='text-sm text-muted-foreground'>Status: {issue.status}</span>
+                        <p className="font-medium italic leading-relaxed text-foreground mt-2">
+                            Priority: {issue.priority}
                         </p>
                     </blockquote> 
 
@@ -80,12 +81,12 @@ function IssueCard({issue}: {issue: NonNullable<RouterOutputs["project"]["getMee
         </Dialog>
          <Card className='relative'>
             <CardHeader>
-                <CardTitle className='text-sm font-medium'>{issue.gist}</CardTitle>
+                <CardTitle className='text-sm font-medium'>{issue.title}</CardTitle>
                 <div className="border-b">
 
                 </div>
-                <CardDescription>
-                    {issue.headline}
+                <CardDescription className='truncate'>
+                    {issue.description}
                 </CardDescription>
             </CardHeader>
             <CardContent>

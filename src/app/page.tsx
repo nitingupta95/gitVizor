@@ -31,7 +31,9 @@ const FEATURES = [
     title: "AI Codebase Q&A",
     description:
       "Ask natural-language questions about your repository and get precise, context-aware answers powered by RAG architecture with real code references.",
-    gradient: "from-indigo-500 to-purple-500",
+    gradient: "from-blue-500 to-blue-600",
+    glow: "shadow-blue-500/20",
+    badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   },
   {
     icon: GitBranch,
@@ -39,6 +41,8 @@ const FEATURES = [
     description:
       "Connect any GitHub repository, automatically track commits in real-time, and browse an interactive log linking back to GitHub.",
     gradient: "from-emerald-500 to-teal-500",
+    glow: "shadow-emerald-500/20",
+    badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
   },
   {
     icon: Mic,
@@ -46,27 +50,35 @@ const FEATURES = [
     description:
       "Upload developer meeting recordings and let AI extract summaries, action items, and issues automatically via AssemblyAI.",
     gradient: "from-amber-500 to-orange-500",
+    glow: "shadow-amber-500/20",
+    badge: "bg-amber-500/10 text-amber-400 border-amber-500/20",
   },
   {
     icon: Users,
     title: "Team Collaboration",
     description:
       "Invite teammates to projects, share AI-generated insights, and keep everyone aligned with shared Q&A history.",
-    gradient: "from-pink-500 to-rose-500",
+    gradient: "from-blue-400 to-blue-600",
+    glow: "shadow-blue-500/20",
+    badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   },
   {
     icon: CreditCard,
     title: "Credit-Based Billing",
     description:
       "Pay only for what you use. Purchase credits via Stripe to index repositories — no monthly subscriptions required.",
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "from-sky-500 to-blue-600",
+    glow: "shadow-sky-500/20",
+    badge: "bg-sky-500/10 text-sky-400 border-sky-500/20",
   },
   {
     icon: Zap,
     title: "Streaming AI Responses",
     description:
       "Answers stream into your screen in real-time via the Vercel AI SDK, so you never stare at a loading spinner.",
-    gradient: "from-violet-500 to-fuchsia-500",
+    gradient: "from-blue-500 to-cyan-500",
+    glow: "shadow-blue-500/20",
+    badge: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   },
 ] as const;
 
@@ -145,9 +157,9 @@ export default function LandingPage() {
     <div className="relative min-h-screen bg-[#09090b] text-white overflow-x-hidden">
       {/* ── Ambient background blobs ── */}
       <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
-        <div className="absolute left-1/4 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-indigo-600/20 blur-[128px] animate-pulse-glow" />
-        <div className="absolute right-1/4 top-1/3 h-[500px] w-[500px] rounded-full bg-purple-600/15 blur-[128px] animate-pulse-glow" style={{ animationDelay: "2s" }} />
-        <div className="absolute bottom-0 left-1/2 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-blue-600/10 blur-[128px]" />
+        <div className="absolute left-1/4 top-0 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-600/20 blur-[128px] animate-pulse-glow" />
+        <div className="absolute right-1/4 top-1/3 h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[128px] animate-pulse-glow" style={{ animationDelay: "2s" }} />
+        <div className="absolute bottom-0 left-1/2 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-blue-700/10 blur-[128px]" />
       </div>
 
       {/* ── Grid overlay ── */}
@@ -160,8 +172,8 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group" id="nav-logo">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/25 transition-transform group-hover:scale-110">
-              <GitBranch className="h-5 w-5 text-white" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 shadow-lg shadow-blue-600/30 transition-all group-hover:scale-110 group-hover:shadow-blue-600/50">
+              <GitBranch className="h-5 w-5 text-white" strokeWidth={2.5} />
             </div>
             <span className="text-xl font-bold tracking-tight">GitVizor</span>
           </Link>
@@ -193,7 +205,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/sign-up"
-              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-indigo-500/40 hover:brightness-110"
+              className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-500 hover:shadow-blue-500/40"
               id="nav-get-started"
             >
               Get Started
@@ -208,7 +220,7 @@ export default function LandingPage() {
          ========================================= */}
       <section className="relative z-10 mx-auto max-w-7xl px-6 pb-24 pt-20 text-center md:pt-32 lg:pt-40">
         {/* Badge */}
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-1.5 text-xs font-medium text-indigo-300">
+        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-4 py-1.5 text-xs font-medium text-blue-400">
           <Sparkles className="h-3.5 w-3.5" />
           AI-Powered Repository Intelligence
         </div>
@@ -216,7 +228,7 @@ export default function LandingPage() {
         {/* Headline */}
         <h1 className="mx-auto max-w-4xl text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
           Your Codebase,{" "}
-          <span className="animate-gradient-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+          <span className="animate-gradient-text bg-gradient-to-r from-blue-400 via-blue-300 to-sky-400">
             Decoded by AI
           </span>
         </h1>
@@ -232,7 +244,7 @@ export default function LandingPage() {
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/sign-up"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-3.5 text-base font-semibold text-white shadow-xl shadow-indigo-500/30 transition-all hover:shadow-indigo-500/50 hover:brightness-110"
+            className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3.5 text-base font-semibold text-white shadow-xl shadow-blue-600/30 transition-all hover:bg-blue-500 hover:shadow-blue-500/50"
             id="hero-cta-primary"
           >
             Start for Free
@@ -240,7 +252,7 @@ export default function LandingPage() {
           </Link>
           <a
             href="#features"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-base font-semibold text-zinc-300 backdrop-blur transition-all hover:border-white/20 hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-base font-semibold text-zinc-300 backdrop-blur transition-all hover:border-blue-500/30 hover:bg-blue-500/5 hover:text-white"
             id="hero-cta-secondary"
           >
             See How It Works
@@ -250,8 +262,8 @@ export default function LandingPage() {
 
         {/* Hero visual — Abstract code mockup */}
         <div className="relative mx-auto mt-16 max-w-4xl animate-fade-in-up">
-          <div className="glow-border rounded-2xl">
-            <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-1 shadow-2xl shadow-indigo-500/10 backdrop-blur">
+          <div className="glow-border-blue rounded-2xl">
+            <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-1 shadow-2xl shadow-blue-600/10 backdrop-blur">
               {/* Browser chrome */}
               <div className="flex items-center gap-2 rounded-t-xl border-b border-white/5 bg-zinc-800/50 px-4 py-3">
                 <div className="h-3 w-3 rounded-full bg-red-500/80" />
@@ -266,22 +278,24 @@ export default function LandingPage() {
                 {/* Sidebar mock */}
                 <div className="col-span-1 space-y-3">
                   <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600" />
+                    <div className="h-8 w-8 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-600/30">
+                      <GitBranch className="h-4 w-4 text-white" strokeWidth={2.5} />
+                    </div>
                     <div className="h-3 w-20 rounded bg-zinc-700" />
                   </div>
                   <div className="space-y-2 pt-2">
                     {["Dashboard", "Q&A", "Meetings", "Billing"].map((item) => (
                       <div
                         key={item}
-                        className={`flex items-center gap-2 rounded-lg px-3 py-2 text-xs ${
+                        className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs transition-colors ${
                           item === "Dashboard"
-                            ? "bg-indigo-500/20 text-indigo-300"
-                            : "text-zinc-500"
+                            ? "bg-blue-600/15 text-blue-400 border border-blue-500/20"
+                            : "text-zinc-500 hover:text-zinc-400"
                         }`}
                       >
                         <div
                           className={`h-2 w-2 rounded-sm ${
-                            item === "Dashboard" ? "bg-indigo-400" : "bg-zinc-600"
+                            item === "Dashboard" ? "bg-blue-500" : "bg-zinc-600"
                           }`}
                         />
                         {item}
@@ -292,7 +306,7 @@ export default function LandingPage() {
                     <div className="text-[10px] text-zinc-600">Projects</div>
                     {["my-saas-app", "api-server"].map((p) => (
                       <div key={p} className="flex items-center gap-2 text-xs text-zinc-500">
-                        <div className="flex h-5 w-5 items-center justify-center rounded bg-zinc-800 text-[10px] text-zinc-400">
+                        <div className="flex h-5 w-5 items-center justify-center rounded-md bg-blue-600/20 text-[10px] text-blue-400 font-bold border border-blue-500/20">
                           {p[0]?.toUpperCase()}
                         </div>
                         {p}
@@ -303,13 +317,13 @@ export default function LandingPage() {
                 {/* Main area */}
                 <div className="col-span-2 space-y-3">
                   {/* Ask Question card mock */}
-                  <div className="rounded-xl border border-white/5 bg-zinc-800/40 p-4">
+                  <div className="rounded-xl border border-blue-500/10 bg-blue-500/5 p-4">
                     <div className="mb-2 text-xs font-medium text-zinc-300">Ask a question</div>
                     <div className="rounded-lg border border-white/5 bg-zinc-800/60 px-3 py-2 text-xs text-zinc-500">
                       Which file handles user authentication?
                     </div>
                     <div className="mt-3 flex">
-                      <div className="rounded-md bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-1.5 text-xs font-medium text-white">
+                      <div className="rounded-full bg-blue-600 px-4 py-1.5 text-xs font-medium text-white shadow-md shadow-blue-600/30">
                         Ask GitVizor!
                       </div>
                     </div>
@@ -355,7 +369,7 @@ export default function LandingPage() {
             {TECH_NAMES.map((name) => (
               <span
                 key={name}
-                className="text-sm font-semibold text-zinc-500 transition-colors hover:text-zinc-300"
+                className="text-sm font-semibold text-zinc-500 transition-colors hover:text-blue-400"
               >
                 {name}
               </span>
@@ -370,13 +384,13 @@ export default function LandingPage() {
       <section id="features" className="relative z-10 mx-auto max-w-7xl px-6 py-24 md:py-32">
         {/* Section header */}
         <div className="mx-auto max-w-2xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-300">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
             <Star className="h-3.5 w-3.5" />
             Features
           </div>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             Everything you need to{" "}
-            <span className="animate-gradient-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
+            <span className="animate-gradient-text bg-gradient-to-r from-blue-400 via-sky-300 to-blue-400">
               understand your code
             </span>
           </h2>
@@ -391,11 +405,11 @@ export default function LandingPage() {
           {FEATURES.map((feat) => (
             <div
               key={feat.title}
-              className="group relative rounded-2xl border border-white/5 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-white/10 hover:bg-zinc-900/80 hover:shadow-xl hover:shadow-indigo-500/5"
+              className="group relative rounded-2xl border border-white/5 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-blue-500/20 hover:bg-zinc-900/80 hover:shadow-xl hover:shadow-blue-500/5"
             >
               {/* Icon */}
               <div
-                className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${feat.gradient} shadow-lg transition-transform group-hover:scale-110`}
+                className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${feat.gradient} shadow-lg ${feat.glow} transition-transform group-hover:scale-110`}
               >
                 <feat.icon className="h-6 w-6 text-white" />
               </div>
@@ -412,13 +426,13 @@ export default function LandingPage() {
       <section id="how-it-works" className="relative z-10 border-y border-white/5 bg-white/[0.01]">
         <div className="mx-auto max-w-7xl px-6 py-24 md:py-32">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-300">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
               <Lightbulb className="h-3.5 w-3.5" />
               How It Works
             </div>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
               Three steps to{" "}
-              <span className="animate-gradient-text bg-gradient-to-r from-emerald-400 to-teal-400">
+              <span className="animate-gradient-text bg-gradient-to-r from-blue-400 to-sky-400">
                 code clarity
               </span>
             </h2>
@@ -432,12 +446,12 @@ export default function LandingPage() {
               <div key={s.step} className="relative text-center">
                 {/* Connector line */}
                 {idx < STEPS.length - 1 && (
-                  <div className="absolute left-1/2 top-10 hidden h-0.5 w-full bg-gradient-to-r from-emerald-500/20 to-transparent md:block" />
+                  <div className="absolute left-1/2 top-10 hidden h-0.5 w-full bg-gradient-to-r from-blue-500/30 to-transparent md:block" />
                 )}
                 {/* Step circle */}
-                <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-zinc-900 shadow-xl shadow-emerald-500/5">
-                  <s.icon className="h-8 w-8 text-emerald-400" />
-                  <div className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500 text-xs font-bold text-white shadow-lg">
+                <div className="relative mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-blue-500/15 bg-blue-500/5 shadow-xl shadow-blue-500/10">
+                  <s.icon className="h-8 w-8 text-blue-400" />
+                  <div className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white shadow-lg shadow-blue-600/40">
                     {s.step}
                   </div>
                 </div>
@@ -454,13 +468,13 @@ export default function LandingPage() {
          ========================================= */}
       <section id="pricing" className="relative z-10 mx-auto max-w-7xl px-6 py-24 md:py-32">
         <div className="mx-auto max-w-2xl text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
             <CreditCard className="h-3.5 w-3.5" />
             Pricing
           </div>
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
             Simple,{" "}
-            <span className="animate-gradient-text bg-gradient-to-r from-amber-400 to-orange-400">
+            <span className="animate-gradient-text bg-gradient-to-r from-blue-400 to-sky-400">
               credit-based
             </span>{" "}
             pricing
@@ -471,10 +485,15 @@ export default function LandingPage() {
         </div>
 
         <div className="mx-auto mt-16 max-w-lg">
-          <div className="glow-border rounded-2xl">
-            <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-8 backdrop-blur">
+          <div className="glow-border-blue rounded-2xl">
+            <div className="rounded-2xl border border-blue-500/15 bg-zinc-900/80 p-8 backdrop-blur">
+              {/* Badge */}
+              <div className="mb-6 inline-flex items-center gap-1.5 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
+                <Sparkles className="h-3 w-3" />
+                Free to start
+              </div>
               {/* Free tier */}
-              <div className="mb-6 flex items-baseline gap-2">
+              <div className="mb-4 flex items-baseline gap-2">
                 <span className="text-5xl font-extrabold text-white">150</span>
                 <span className="text-lg text-zinc-400">free credits</span>
               </div>
@@ -492,20 +511,20 @@ export default function LandingPage() {
                   "Multi-model AI fallback",
                 ].map((perk) => (
                   <div key={perk} className="flex items-center gap-3 text-sm text-zinc-300">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-500" />
                     {perk}
                   </div>
                 ))}
               </div>
-              <div className="mb-4 rounded-xl border border-white/5 bg-zinc-800/50 p-4 text-center">
-                <p className="text-xs text-zinc-500">Need more?</p>
+              <div className="mb-6 rounded-xl border border-blue-500/10 bg-blue-500/5 p-4 text-center">
+                <p className="text-xs text-zinc-500">Need more credits?</p>
                 <p className="mt-1 text-2xl font-bold text-white">
                   $2<span className="text-base font-normal text-zinc-400"> / 100 credits</span>
                 </p>
               </div>
               <Link
                 href="/sign-up"
-                className="block w-full rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 transition-all hover:shadow-indigo-500/40 hover:brightness-110"
+                className="block w-full rounded-xl bg-blue-600 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-500 hover:shadow-blue-500/40"
                 id="pricing-cta"
               >
                 Get Started Free
@@ -527,8 +546,8 @@ export default function LandingPage() {
               { icon: Zap, label: "Lightning Fast", desc: "Turbo dev server + edge-ready" },
             ].map((item) => (
               <div key={item.label} className="flex flex-col items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-white/10 bg-zinc-900">
-                  <item.icon className="h-6 w-6 text-indigo-400" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-blue-500/15 bg-blue-500/5">
+                  <item.icon className="h-6 w-6 text-blue-400" />
                 </div>
                 <h4 className="text-sm font-semibold text-white">{item.label}</h4>
                 <p className="text-xs text-zinc-500">{item.desc}</p>
@@ -543,7 +562,7 @@ export default function LandingPage() {
          ========================================= */}
       <section id="faq" className="relative z-10 mx-auto max-w-3xl px-6 py-24 md:py-32">
         <div className="mb-12 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-300">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
             <MessageSquare className="h-3.5 w-3.5" />
             FAQ
           </div>
@@ -556,7 +575,7 @@ export default function LandingPage() {
           {FAQS.map((faq) => (
             <details
               key={faq.question}
-              className="group rounded-xl border border-white/5 bg-zinc-900/50 transition-all hover:border-white/10 [&_summary::-webkit-details-marker]:hidden"
+              className="group rounded-xl border border-white/5 bg-zinc-900/50 transition-all hover:border-blue-500/20 [&_summary::-webkit-details-marker]:hidden"
             >
               <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-sm font-medium text-white">
                 {faq.question}
@@ -574,11 +593,15 @@ export default function LandingPage() {
           CTA BANNER
          ========================================= */}
       <section className="relative z-10 mx-auto max-w-7xl px-6 pb-24">
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 px-8 py-16 text-center backdrop-blur md:px-16">
+        <div className="relative overflow-hidden rounded-3xl border border-blue-500/15 bg-blue-600/5 px-8 py-16 text-center backdrop-blur md:px-16">
           {/* Decorative blobs inside */}
-          <div className="pointer-events-none absolute -left-20 -top-20 h-60 w-60 rounded-full bg-indigo-500/20 blur-[80px]" />
-          <div className="pointer-events-none absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-purple-500/20 blur-[80px]" />
+          <div className="pointer-events-none absolute -left-20 -top-20 h-60 w-60 rounded-full bg-blue-600/20 blur-[80px]" />
+          <div className="pointer-events-none absolute -bottom-20 -right-20 h-60 w-60 rounded-full bg-blue-500/15 blur-[80px]" />
 
+          <div className="relative mb-4 inline-flex items-center gap-2 rounded-full border border-blue-500/25 bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
+            <Sparkles className="h-3.5 w-3.5" />
+            Start for free — no credit card required
+          </div>
           <h2 className="relative mx-auto max-w-xl text-3xl font-bold tracking-tight sm:text-4xl">
             Ready to decode your codebase?
           </h2>
@@ -586,14 +609,20 @@ export default function LandingPage() {
             Join developers who use GitVizor to understand, document, and collaborate
             on their code faster than ever.
           </p>
-          <div className="relative mt-8">
+          <div className="relative mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/sign-up"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-zinc-900 shadow-xl transition-all hover:bg-zinc-100"
+              className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3.5 text-sm font-semibold text-white shadow-xl shadow-blue-600/30 transition-all hover:bg-blue-500 hover:shadow-blue-500/50"
               id="cta-final"
             >
               Get Started — It&apos;s Free
               <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/sign-in"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-sm font-semibold text-zinc-300 transition-all hover:border-blue-500/30 hover:bg-blue-500/5"
+            >
+              Sign In
             </Link>
           </div>
         </div>
@@ -607,22 +636,22 @@ export default function LandingPage() {
           <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
             {/* Brand */}
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600">
-                <GitBranch className="h-4 w-4 text-white" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-600 shadow-md shadow-blue-600/25">
+                <GitBranch className="h-4 w-4 text-white" strokeWidth={2.5} />
               </div>
               <span className="text-lg font-bold tracking-tight">GitVizor</span>
             </div>
 
             {/* Links */}
             <div className="flex items-center gap-6 text-sm text-zinc-500">
-              <a href="#features" className="transition-colors hover:text-white">Features</a>
-              <a href="#pricing" className="transition-colors hover:text-white">Pricing</a>
-              <a href="#faq" className="transition-colors hover:text-white">FAQ</a>
+              <a href="#features" className="transition-colors hover:text-blue-400">Features</a>
+              <a href="#pricing" className="transition-colors hover:text-blue-400">Pricing</a>
+              <a href="#faq" className="transition-colors hover:text-blue-400">FAQ</a>
               <a
                 href="https://github.com/nitingupta95/githVizor"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="transition-colors hover:text-white"
+                className="transition-colors hover:text-blue-400"
               >
                 <Github className="h-4 w-4" />
               </a>

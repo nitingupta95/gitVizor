@@ -18,7 +18,7 @@ type FormInput = {
 
 const Createpage = () => {
   const router = useRouter();
-  const { register, handleSubmit, reset } = useForm<FormInput>();
+  const { register, handleSubmit } = useForm<FormInput>();
   const createProject = api.project.createProject.useMutation();
   const checkcredits = api.project.checkCredits.useMutation();
   const [processingProjectId, setProcessingProjectId] = useState<string | null>(
