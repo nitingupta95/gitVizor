@@ -5,8 +5,8 @@ export default function Page() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#09090b]">
       {/* ── Ambient background ── */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute left-1/3 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-600/15 blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/3 h-[400px] w-[400px] rounded-full bg-purple-600/10 blur-[120px]" />
+        <div className="absolute left-1/3 top-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-blue-600/15 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/3 h-[400px] w-[400px] rounded-full bg-blue-500/10 blur-[120px]" />
       </div>
 
       {/* Grid pattern */}
@@ -18,7 +18,7 @@ export default function Page() {
           {/* ── Logo + Header ── */}
           <div className="flex flex-col items-center pt-10 pb-2 px-8">
             {/* Logo mark */}
-            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30">
+            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-600/30">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -57,7 +57,7 @@ export default function Page() {
                   formButtonPrimary:
                     "bg-gray-900 hover:bg-gray-800 text-white font-semibold py-2.5 rounded-xl transition-all shadow-md hover:shadow-lg text-sm",
                   formFieldInput:
-                    "border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 text-gray-800 placeholder:text-gray-400 bg-gray-50/50 py-2.5",
+                    "border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 text-gray-800 placeholder:text-gray-400 bg-gray-50/50 py-2.5",
                   formFieldLabel: "text-gray-700 font-medium text-sm",
                   socialButtonsBlockButton:
                     "border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium rounded-xl py-2.5 transition-all hover:border-gray-300",
@@ -67,7 +67,7 @@ export default function Page() {
                   formField: "mb-1",
                   footerActionText: "text-gray-500",
                   footerActionLink:
-                    "text-indigo-600 hover:text-indigo-700 font-semibold",
+                    "text-blue-600 hover:text-blue-700 font-semibold",
                 },
               }}
             />

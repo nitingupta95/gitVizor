@@ -72,8 +72,8 @@ export default function SharingSettings() {
     <div className="rounded-2xl border border-border/40 bg-card/50 backdrop-blur-sm overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-3 px-6 py-4 border-b border-border/40 bg-muted/10">
-        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-indigo-500/15 border border-indigo-500/20">
-          <Globe className="h-4 w-4 text-indigo-400" />
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-blue-500/15 border border-blue-500/20">
+          <Globe className="h-4 w-4 text-blue-400" />
         </div>
         <div>
           <h2 className="text-sm font-semibold">Public Sharing</h2>
@@ -116,7 +116,7 @@ export default function SharingSettings() {
                   "flex-shrink-0 gap-2",
                   share?.enabled
                     ? "border-border/40 hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30"
-                    : "bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0 shadow-md shadow-indigo-500/20"
+                    : "bg-gradient-to-r bg-blue-600 text-white border-0 shadow-md shadow-blue-600/20"
                 )}
               >
                 {isBusy ? (
@@ -185,7 +185,7 @@ export default function SharingSettings() {
                       <AlertDialogCancel className="border-border/40">Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => regenerate.mutate({ projectId: projectId! })}
-                        className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white border-0"
+                        className="bg-gradient-to-r bg-blue-600 text-white border-0"
                       >
                         Yes, regenerate
                       </AlertDialogAction>
@@ -215,7 +215,7 @@ export default function SharingSettings() {
                         ? "bg-red-500"
                         : capPct >= 70
                         ? "bg-amber-500"
-                        : "bg-gradient-to-r from-indigo-500 to-purple-600"
+                        : "bg-gradient-to-r bg-blue-600"
                     )}
                     style={{ width: `${Math.min(capPct, 100)}%` }}
                   />

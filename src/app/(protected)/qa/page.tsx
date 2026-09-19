@@ -27,8 +27,8 @@ const QAPage = () => {
       {questions && questions.length > 0 && (
         <>
           <div className="flex items-center gap-2.5 mb-4">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-500/15 border border-indigo-500/20">
-              <MessageSquare className="h-3.5 w-3.5 text-indigo-400" />
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/15 border border-blue-500/20">
+              <MessageSquare className="h-3.5 w-3.5 text-blue-400" />
             </div>
             <h2 className="text-base font-semibold tracking-tight">Saved Questions</h2>
             <span className="ml-1 text-xs text-muted-foreground/50 tabular-nums bg-muted/40 rounded-full px-2 py-0.5">
@@ -39,7 +39,7 @@ const QAPage = () => {
           <div className="grid gap-2.5">
             {questions.map((q, index) => (
               <SheetTrigger key={q.id} asChild onClick={() => setQuestionIndex(index)}>
-                <button className="group w-full text-left flex items-start gap-3.5 rounded-xl border border-border/40 bg-card/50 backdrop-blur-sm p-4 hover:border-indigo-500/30 hover:bg-indigo-500/5 transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-indigo-500/5">
+                <button className="group w-full text-left flex items-start gap-3.5 rounded-xl border border-border/40 bg-card/50 backdrop-blur-sm p-4 hover:border-blue-500/30 hover:bg-blue-500/5 transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-blue-500/5">
                   {/* Avatar */}
                   {q.User?.imageUrl ? (
                     <img
@@ -48,8 +48,8 @@ const QAPage = () => {
                       className="flex-shrink-0 w-8 h-8 rounded-full ring-2 ring-border/30 ring-offset-1 ring-offset-background mt-0.5"
                     />
                   ) : (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center mt-0.5">
-                      <Bot className="w-4 h-4 text-indigo-400" />
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500/15 flex items-center justify-center mt-0.5">
+                      <Bot className="w-4 h-4 text-blue-400" />
                     </div>
                   )}
 
@@ -79,7 +79,7 @@ const QAPage = () => {
                   </div>
 
                   {/* Arrow */}
-                  <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted-foreground/30 group-hover:text-indigo-400 mt-1 transition-colors" />
+                  <ChevronRight className="flex-shrink-0 w-4 h-4 text-muted-foreground/30 group-hover:text-blue-400 mt-1 transition-colors" />
                 </button>
               </SheetTrigger>
             ))}
@@ -105,8 +105,8 @@ const QAPage = () => {
           {/* Sheet header */}
           <SheetHeader className="px-6 pt-6 pb-4 border-b border-border/40 bg-muted/10 flex-shrink-0">
             <SheetTitle className="flex items-start gap-3 text-left">
-              <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center mt-0.5">
-                <Bot className="h-4 w-4 text-indigo-400" />
+              <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-blue-500/15 border border-blue-500/20 flex items-center justify-center mt-0.5">
+                <Bot className="h-4 w-4 text-blue-400" />
               </div>
               <span className="text-base font-semibold leading-snug">{question.question}</span>
             </SheetTitle>
@@ -116,8 +116,8 @@ const QAPage = () => {
           <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
             <div data-color-mode="dark" className="rounded-xl border border-border/40 overflow-hidden bg-muted/20">
               <div className="flex items-center gap-2 px-4 py-2.5 border-b border-border/30 bg-muted/30">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                <span className="text-xs font-medium text-indigo-300">AI Answer</span>
+                <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                <span className="text-xs font-medium text-blue-300">AI Answer</span>
               </div>
               <div className="p-4 max-h-[50vh] overflow-y-auto">
                 <MDEditor.Markdown
@@ -125,9 +125,9 @@ const QAPage = () => {
                   className="!bg-transparent !text-foreground prose prose-sm prose-invert !max-w-none w-full
                     prose-p:w-full prose-headings:w-full
                     prose-headings:text-foreground prose-headings:font-semibold
-                    prose-code:bg-muted/60 prose-code:text-indigo-300 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs
+                    prose-code:bg-muted/60 prose-code:text-blue-300 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs
                     prose-pre:bg-muted/60 prose-pre:border prose-pre:border-border/40 prose-pre:rounded-lg prose-pre:w-full
-                    prose-a:text-indigo-400"
+                    prose-a:text-blue-400"
                 />
               </div>
             </div>
