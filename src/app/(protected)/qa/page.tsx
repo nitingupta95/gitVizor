@@ -12,7 +12,10 @@ import { MessageSquare, Bot, Clock, FileText, ChevronRight, Sparkles } from "luc
 
 const QAPage = () => {
   const { projectId } = useProject();
-  const { data: questions } = api.project.getQuestions.useQuery({ projectId: projectId! });
+  const { data: questions } = api.project.getQuestions.useQuery(
+    { projectId: projectId! },
+    { enabled: !!projectId }
+  );
   const [questionIndex, setQuestionIndex] = React.useState(0);
   const question = questions?.[questionIndex];
 

@@ -10,7 +10,10 @@ import { cn } from '@/lib/utils' // make sure this exists
 
 const CommitLog = () => {
   const { projectId, project } = useProject()
-  const { data: commits = [], error } = api.project.getCommits.useQuery({ projectId: projectId! })
+  const { data: commits = [], error } = api.project.getCommits.useQuery(
+    { projectId: projectId! },
+    { enabled: !!projectId }
+  )
 
   useEffect(() => {
     if (error) {

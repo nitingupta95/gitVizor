@@ -6,7 +6,10 @@ import React from 'react'
 
 const TeamMember = () => {
     const {projectId}= useProject();
-    const {data:members}= api.project.getTeamMembers.useQuery({projectId: projectId ?? ""});
+    const {data:members}= api.project.getTeamMembers.useQuery(
+      {projectId: projectId!},
+      { enabled: !!projectId }
+    );
   return (
     <div className='flex items-center gap-2'>
         {members?.map((member)=>(
