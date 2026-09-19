@@ -5,10 +5,9 @@ import { useLocalStorage } from 'usehooks-ts';
 const useProject = () => {
   const { data: projects } = api.project.getProjects.useQuery();
 
-  // FIX 1: Add <string | null> to tell TypeScript the possible types
-  const [projectId, setProjectId] = useLocalStorage<string | null>('githubSaas', null);
+  // Use empty string as default so TRPC z.string() never receives null
+  const [projectId, setProjectId] = useLocalStorage<string>('githubSaas', '');
 
-  // FIX 2: Remove the incorrect type annotation. TypeScript can now infer it correctly.
   const project = projects?.find((project) => project.id === projectId);
 
   return {
