@@ -144,7 +144,7 @@ export default function PublicGuideClient({
       <header className="border-b border-white/5 bg-[#0d0d14]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br bg-blue-600 flex items-center justify-center shadow-lg">
               <BookOpen className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="font-semibold text-sm text-white/90">{projectName}</span>
@@ -178,14 +178,14 @@ export default function PublicGuideClient({
                 className={cn(
                   "group flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-left transition-all duration-150",
                   selectedSection?.id === s.id
-                    ? "bg-indigo-500/15 text-indigo-300 border border-indigo-500/20"
+                    ? "bg-blue-500/15 text-blue-300 border border-blue-500/20"
                     : "text-white/40 hover:text-white/70 hover:bg-white/5 border border-transparent"
                 )}
               >
                 <ChevronRight
                   className={cn(
                     "w-3 h-3 flex-shrink-0 transition-transform",
-                    selectedSection?.id === s.id ? "rotate-90 text-indigo-400" : "opacity-0 group-hover:opacity-60"
+                    selectedSection?.id === s.id ? "rotate-90 text-blue-400" : "opacity-0 group-hover:opacity-60"
                   )}
                 />
                 <span className="truncate font-medium">{s.title}</span>
@@ -204,8 +204,8 @@ export default function PublicGuideClient({
               {selectedSection && (
                 <article className="rounded-2xl border border-white/8 bg-white/[0.03] overflow-hidden">
                   <div className="flex items-center gap-3 px-6 py-4 border-b border-white/8 bg-white/[0.02]">
-                    <div className="w-6 h-6 rounded-md bg-indigo-500/15 border border-indigo-500/20 flex items-center justify-center">
-                      <Sparkles className="w-3 h-3 text-indigo-400" />
+                    <div className="w-6 h-6 rounded-md bg-blue-500/15 border border-blue-500/20 flex items-center justify-center">
+                      <Sparkles className="w-3 h-3 text-blue-400" />
                     </div>
                     <h1 className="text-base font-semibold text-white/90">{selectedSection.title}</h1>
                     {selectedSection.status === "STALE" && (
@@ -219,8 +219,8 @@ export default function PublicGuideClient({
                     <ReactMarkdown
                       components={{
                       p: ({ children }) => <p className="text-white/70 leading-relaxed text-sm">{children}</p>,
-                      code: ({ children }) => <code className="bg-white/8 text-indigo-300 px-1.5 py-0.5 rounded text-xs font-mono">{children}</code>,
-                      a: ({ href, children }) => <a href={href} className="text-indigo-400 hover:underline">{children}</a>,
+                      code: ({ children }) => <code className="bg-white/8 text-blue-300 px-1.5 py-0.5 rounded text-xs font-mono">{children}</code>,
+                      a: ({ href, children }) => <a href={href} className="text-blue-400 hover:underline">{children}</a>,
                     }}
                     >
                       {selectedSection.content}
@@ -238,7 +238,7 @@ export default function PublicGuideClient({
                               href={buildGithubLink(githubUrl, f)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 text-[11px] font-mono text-indigo-300/70 bg-indigo-500/8 border border-indigo-500/15 px-2.5 py-1 rounded-lg hover:border-indigo-500/30 hover:text-indigo-300 transition-all"
+                              className="flex items-center gap-1.5 text-[11px] font-mono text-blue-300/70 bg-blue-500/8 border border-blue-500/15 px-2.5 py-1 rounded-lg hover:border-blue-500/30 hover:text-blue-300 transition-all"
                             >
                               <FileCode2 className="w-3 h-3" />
                               {f}
@@ -262,7 +262,7 @@ export default function PublicGuideClient({
                       className={cn(
                         "flex-shrink-0 text-xs px-3 py-1.5 rounded-lg border transition-all",
                         selectedSection?.id === s.id
-                          ? "bg-indigo-500/15 text-indigo-300 border-indigo-500/25"
+                          ? "bg-blue-500/15 text-blue-300 border-blue-500/20"
                           : "text-white/40 border-white/10 hover:text-white/70"
                       )}
                     >
@@ -326,7 +326,7 @@ function PublicQAWidget({
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-white/8 bg-white/[0.02]">
         <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-md">
+          <div className="w-6 h-6 rounded-md bg-gradient-to-br bg-blue-600 flex items-center justify-center shadow-md">
             <Sparkles className="w-3 h-3 text-white" />
           </div>
           <span className="text-sm font-semibold text-white/90">Ask about this codebase</span>
@@ -351,7 +351,7 @@ function PublicQAWidget({
             disabled={isActive}
             rows={3}
             placeholder="How does authentication work in this project?"
-            className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 placeholder:text-white/25 focus:outline-none focus:border-indigo-500/40 focus:ring-1 focus:ring-indigo-500/20 transition-colors disabled:opacity-50"
+            className="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 placeholder:text-white/25 focus:outline-none focus:border-blue-500/30 focus:ring-1 focus:ring-blue-500/20 transition-colors disabled:opacity-50"
           />
         </div>
 
@@ -362,7 +362,7 @@ function PublicQAWidget({
           <button
             onClick={onAsk}
             disabled={isActive || !question.trim()}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-medium shadow-lg shadow-indigo-500/20 hover:from-indigo-600 hover:to-purple-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r bg-blue-600 text-white text-sm font-medium shadow-lg shadow-blue-600/20 hover:bg-blue-700 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {isActive ? (
               <>
@@ -413,9 +413,9 @@ function PublicQAWidget({
                 <ReactMarkdown
                   components={{
                     p: ({ children }) => <p className="text-white/75 leading-relaxed text-sm">{children}</p>,
-                    code: ({ children }) => <code className="bg-white/10 text-indigo-300 px-1.5 py-0.5 rounded text-xs font-mono">{children}</code>,
+                    code: ({ children }) => <code className="bg-white/10 text-blue-300 px-1.5 py-0.5 rounded text-xs font-mono">{children}</code>,
                     pre: ({ children }) => <pre className="bg-[#13131f] border border-white/10 rounded-lg p-3 overflow-x-auto">{children}</pre>,
-                    a: ({ href, children }) => <a href={href} className="text-indigo-400 hover:underline">{children}</a>,
+                    a: ({ href, children }) => <a href={href} className="text-blue-400 hover:underline">{children}</a>,
                   }}
                 >
                   {qaState.answer}
@@ -423,7 +423,7 @@ function PublicQAWidget({
 
                 {qaState.kind === "streaming" && (
                   <div className="flex items-center gap-2 text-xs text-white/30">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
                     Generating…
                   </div>
                 )}
@@ -440,7 +440,7 @@ function PublicQAWidget({
                           href={buildGithubLink(githubUrl, r.fileName)}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 text-[11px] font-mono text-indigo-300/70 bg-indigo-500/8 border border-indigo-500/15 px-2.5 py-1 rounded-lg hover:border-indigo-500/30 hover:text-indigo-300 transition-all"
+                          className="flex items-center gap-1.5 text-[11px] font-mono text-blue-300/70 bg-blue-500/8 border border-blue-500/15 px-2.5 py-1 rounded-lg hover:border-blue-500/30 hover:text-blue-300 transition-all"
                         >
                           <FileCode2 className="w-3 h-3" />
                           {r.fileName}

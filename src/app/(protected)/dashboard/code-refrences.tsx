@@ -30,11 +30,11 @@ export const CodeReferences = ({ filesReferences }: Props) => {
                 className={cn(
                   "flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 whitespace-nowrap flex-shrink-0",
                   isActive
-                    ? "bg-indigo-500/15 text-indigo-300 border border-indigo-500/25 shadow-sm"
+                    ? "bg-blue-500/15 text-blue-300 border border-blue-500/20 shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted/60 border border-transparent"
                 )}
               >
-                <FileCode2 className={cn("w-3.5 h-3.5", isActive ? "text-indigo-400" : "opacity-60")} />
+                <FileCode2 className={cn("w-3.5 h-3.5", isActive ? "text-blue-400" : "opacity-60")} />
                 {file.fileName}
               </button>
             );
